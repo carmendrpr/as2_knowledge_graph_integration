@@ -1,0 +1,8 @@
+setup.py
+as2_knowledge_graph_integration/__init__.py
+as2_knowledge_graph_integration/integration.py
+as2_knowledge_graph_integration/test.py
+as2_knowledge_graph_integration.egg-info/PKG-INFO
+as2_knowledge_graph_integration.egg-info/SOURCES.txt
+as2_knowledge_graph_integration.egg-info/dependency_links.txt
+as2_knowledge_graph_integration.egg-info/top_level.txt
