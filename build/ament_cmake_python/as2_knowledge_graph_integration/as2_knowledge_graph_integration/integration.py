@@ -1,4 +1,5 @@
 import utils
+import time
 from geometry_msgs.msg import PoseStamped
 from as2_knowledge_graph_msgs.srv import ReadGraph, CreateNode
 from knowledge_graph_msgs.msg import Node, Edge, Content, Property
@@ -11,60 +12,59 @@ class IntegrationService(RclNode):
 
     def __init__(self):
         super().__init__('Implementation_node')
+
+        """Timers"""
+        self.timer_1 = self.create_timer(3.0, self.create_node_callback)
+
+        """Subscription"""
         self.subscription = self.create_subscription(
             PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)
-        # self.srv = self.create_service(ReadProperty, 'ask_pose', self.ask_pose_callback)
+
+        """Clients"""
+        self.cli_create_node = self.create_client(CreateNode, 'create_node')
+
+        # Checking if the services are available
+        while not self.cli_create_node.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service not available, waiting again...')
 
         self.current_pose_ = None
         self.current_node_ = None
 
-    def read_pose_callback(self, msg: PoseStamped):
+    def read_pose_callback(self, msg: PoseStamped) -> None:
         """Call for the pose info topic"""
-        self.current_pose_ = msg.pose
-        # print(self.current_pose_)
-        aux_node = Node()
-        aux_node.node_name = self.get_namespace()
-        prop = utils.pos_prop_from_pose(msg.pose)
-        aux_node.properties.append(prop)
-        if self.current_pose_.position.x:
-            self.current_node_ = aux_node
+        print('suscribe to pose')
+        aux_node = utils.node_from_msg('Dron', self.get_namespace(), msg.pose)
+        # list_req = [aux_node, 'volando']
+        self.current_node_ = aux_node
+        # self.future_resp = CreateNode()
+        # if not self.future_resp is None:
+        # Sending request to add node
+        req = CreateNode.Request()
+        req.node = self.current_node_
+        self.future_resp = self.cli_create_node.call_async(req)
 
-    def add_node_to_graph(self) -> bool:
-        """Add new node to the graph"""
-        if self.current_node_ is None:
-            return False
-        self.cli = self.create_client(CreateNode, 'create_node')
-        print("add_node_service")
-        while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
+    def create_node_callback(self):
+        self.get_logger().info('Timer 1 executing')
+        # checking if resp is done
+        if self.future_resp.done():
+            print('the reponse is', self.future_resp.result())
 
-        self.req = CreateNode.Request()
-        self.req.node = self.current_node_
+    # def read_node_from_graph(self, node_name) -> bool:
+    #     print("Read node graph")
+    #     print(node_name)
+    #     if node_name is None:
+    #         return False
 
-        self.resp = self.cli.call_async(self.req)
-        rclpy.spin_until_future_complete(self, self.resp)
-        print("response:", self.resp)
-        print(self.req.node.node_name)
-        self.current_node_ = None
-        return True
+    #     self.cli_read_graph = self.create_client(ReadGraph, 'read_graph')
+    #     while not self.cli_read_graph.wait_for_service(timeout_sec=1.0):
+    #         self.get_logger().info('service not available, waiting again...')
+    #     self.req = ReadGraph.Request()
+    #     self.resp = ReadGraph.Response()
+    #     self.req.node_name = node_name
+    #     self.resp = self.cli_read_graph.call_async(self.req)
+    #     # rclpy.spin_until_future_complete(self, self.resp)
 
-    def read_node_from_graph(self, node_name) -> bool:
-        print("Read node graph")
-        print(node_name)
-        if node_name is None:
-            return False
-
-        self.cli = self.create_client(ReadGraph, 'read_graph')
-        while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
-        self.req = ReadGraph.Request()
-        self.resp = ReadGraph.Response()
-        self.req.node_name = node_name
-        self.resp = self.cli.call_async(self.req)
-        rclpy.spin_until_future_complete(self, self.resp)
-        for i in (1, 2, 3):
-            print("response:", self.resp[i])
-        return True
+    #     return True
 
 
 def main():
@@ -76,9 +76,6 @@ def main():
 
     while rclpy.ok():
         rclpy.spin_once(service_node)
-        service_node.add_node_to_graph()
-        service_node.read_node_from_graph('/drone0')
-
         time.sleep(1)
 
     rclpy.shutdown()
