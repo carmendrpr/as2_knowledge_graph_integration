@@ -1,3 +1,4 @@
+import utils
 from geometry_msgs.msg import PoseStamped
 from as2_knowledge_graph_msgs.srv import ReadGraph, CreateNode
 from knowledge_graph_msgs.msg import Node, Edge, Content, Property
@@ -6,28 +7,12 @@ from rclpy.node import Node as RclNode
 from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
 
 
-def pos_prop_from_pose(pose):
-    prop = Property()
-    prop.key = 'Position'
-    prop.value.type = Property.VFLOAT
-    prop.value.float_vector.append(pose.position.x)
-    prop.value.float_vector.append(pose.position.y)
-    prop.value.float_vector.append(pose.position.z)
-    return prop
-
-
 class IntegrationService(RclNode):
 
     def __init__(self):
-        # # Global items
-        # current_pose_ = PoseStamped()
-        # current_node_ = Node()
-
         super().__init__('Implementation_node')
         self.subscription = self.create_subscription(
             PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)
-        # self.cli = self.create_client(CreateNode, 'create_node')
-        self.cli = self.create_client(ReadGraph, 'service_read_node_graph_')
         # self.srv = self.create_service(ReadProperty, 'ask_pose', self.ask_pose_callback)
 
         self.current_pose_ = None
@@ -36,15 +21,15 @@ class IntegrationService(RclNode):
     def read_pose_callback(self, msg: PoseStamped):
         """Call for the pose info topic"""
         self.current_pose_ = msg.pose
-        print(self.current_pose_)
-
+        # print(self.current_pose_)
         aux_node = Node()
         aux_node.node_name = self.get_namespace()
-        # aux_node.properties = xpose
+        prop = utils.pos_prop_from_pose(msg.pose)
+        aux_node.properties.append(prop)
         if self.current_pose_.position.x:
             self.current_node_ = aux_node
 
-    def add_node_(self) -> bool:
+    def add_node_to_graph(self) -> bool:
         """Add new node to the graph"""
         if self.current_node_ is None:
             return False
@@ -59,27 +44,27 @@ class IntegrationService(RclNode):
         self.resp = self.cli.call_async(self.req)
         rclpy.spin_until_future_complete(self, self.resp)
         print("response:", self.resp)
+        print(self.req.node.node_name)
         self.current_node_ = None
-        return self.resp
+        return True
 
-    # if (self.current_node_):
-    #     add_node_(current_node_)
+    def read_node_from_graph(self, node_name) -> bool:
+        print("Read node graph")
+        print(node_name)
+        if node_name is None:
+            return False
 
-    #     if read_pose_callback:
-    #         add_node_(self, current_pose_)
-
-    #     def check_pose(self) -> bool:
-    #         """Check if the current pose is the desired pose, pose=1m"""
-    #         if (self.current_pose_.pose.position.z) == 1:
-    #             return True
-    #         return False
-
-    #     def ask_pose_callback(self, request, response):
-    #         for i in
-    #         response
-    #     self.get_logger().info('Incoming request\na: %d b: %d' % (request.a, request.b))
-
-    #     return response
+        self.cli = self.create_client(ReadGraph, 'read_graph')
+        while not self.cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service not available, waiting again...')
+        self.req = ReadGraph.Request()
+        self.resp = ReadGraph.Response()
+        self.req.node_name = node_name
+        self.resp = self.cli.call_async(self.req)
+        rclpy.spin_until_future_complete(self, self.resp)
+        for i in (1, 2, 3):
+            print("response:", self.resp[i])
+        return True
 
 
 def main():
@@ -91,7 +76,9 @@ def main():
 
     while rclpy.ok():
         rclpy.spin_once(service_node)
-        out = service_node.add_node_()
+        service_node.add_node_to_graph()
+        service_node.read_node_from_graph('/drone0')
+
         time.sleep(1)
 
     rclpy.shutdown()
