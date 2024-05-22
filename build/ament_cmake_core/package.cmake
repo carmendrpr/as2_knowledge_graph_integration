@@ -6,7 +6,7 @@ set(as2_knowledge_graph_integration_BUILDTOOL_DEPENDS "ament_cmake" "ament_cmake
 set(as2_knowledge_graph_integration_BUILD_EXPORT_DEPENDS "rclcpp" "knowledge_graph" "knowledge_graph_msgs" "as2_knowledge_graph_msgs" "backward_ros" "as2_core" "as2_knowledge_graph" "as2_knowledge_graph_integration_msgs")
 set(as2_knowledge_graph_integration_BUILDTOOL_EXPORT_DEPENDS )
 set(as2_knowledge_graph_integration_EXEC_DEPENDS "rclcpp" "knowledge_graph" "knowledge_graph_msgs" "as2_knowledge_graph_msgs" "backward_ros" "as2_core" "as2_knowledge_graph" "as2_knowledge_graph_integration_msgs")
-set(as2_knowledge_graph_integration_TEST_DEPENDS "ament_copyright" "ament_flake8" "ament_pep257" "python3-pytest")
+set(as2_knowledge_graph_integration_TEST_DEPENDS "ament_lint_auto" "ament_lint_common" "ament_cmake_gtest" "python3-pytest")
 set(as2_knowledge_graph_integration_GROUP_DEPENDS )
 set(as2_knowledge_graph_integration_MEMBER_OF_GROUPS )
 set(as2_knowledge_graph_integration_DEPRECATED "")

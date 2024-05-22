@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  name="as2_knowledge_graph_integration.xmllint"
+  tests="10"
+  errors="0"
+  failures="0"
+  time="1.634"
+>
+  <testcase
+    name="package.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/Testing/20240522-1148/Test.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/copyright.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/cppcheck.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/cpplint.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/flake8.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/lint_cmake.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/pep257.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/uncrustify.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <testcase
+    name="build/test_results/as2_knowledge_graph_integration/xmllint.xunit.xml"
+    classname="as2_knowledge_graph_integration.xmllint"/>
+  <system-out>Checked files:
+* package.xml
+* build/Testing/20240522-1148/Test.xml
+* build/test_results/as2_knowledge_graph_integration/copyright.xunit.xml
+* build/test_results/as2_knowledge_graph_integration/cppcheck.xunit.xml
+* build/test_results/as2_knowledge_graph_integration/cpplint.xunit.xml
+* build/test_results/as2_knowledge_graph_integration/flake8.xunit.xml
+* build/test_results/as2_knowledge_graph_integration/lint_cmake.xunit.xml
+* build/test_results/as2_knowledge_graph_integration/pep257.xunit.xml
+* build/test_results/as2_knowledge_graph_integration/uncrustify.xunit.xml
+* build/test_results/as2_knowledge_graph_integration/xmllint.xunit.xml</system-out>
+</testsuite>
