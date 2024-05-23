@@ -115,7 +115,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/usr/lib/x86_64-linux-gnu/libdw.so"
+			"value" : "/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so"
 		},
 		{
 			"name" : "BACKWARD_TESTS",
@@ -295,10 +295,10 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "CXX compiler"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "STRING",
+			"type" : "FILEPATH",
 			"value" : "/usr/bin/g++"
 		},
 		{
@@ -423,10 +423,10 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "C compiler"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "STRING",
+			"type" : "FILEPATH",
 			"value" : "/usr/bin/gcc"
 		},
 		{
@@ -1282,6 +1282,18 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "CycloneDDS_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for CycloneDDS."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/opt/ros/humble/lib/x86_64-linux-gnu/cmake/CycloneDDS"
+		},
+		{
 			"name" : "Eigen3_DIR",
 			"properties" : 
 			[
@@ -1303,7 +1315,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/opt/ros/humble/share/backward_ros/cmake][/usr/lib/x86_64-linux-gnu/libdw.so][v()]"
+			"value" : "[/opt/ros/humble/share/backward_ros/cmake][/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so;/usr/lib/x86_64-linux-gnu/libdw.so][v()]"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Eigen3",
@@ -1660,6 +1672,18 @@
 			],
 			"type" : "FILEPATH",
 			"value" : "/usr/bin/python3"
+		},
+		{
+			"name" : "RMW_IMPLEMENTATION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Select ROS middleware implementation to link against"
+				}
+			],
+			"type" : "STRING",
+			"value" : "rmw_cyclonedds_cpp"
 		},
 		{
 			"name" : "SITE",
@@ -3006,6 +3030,42 @@
 			"value" : "/opt/ros/humble/share/geometry_msgs/cmake"
 		},
 		{
+			"name" : "iceoryx_binding_c_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for iceoryx_binding_c."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/opt/ros/humble/lib/x86_64-linux-gnu/cmake/iceoryx_binding_c"
+		},
+		{
+			"name" : "iceoryx_hoofs_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for iceoryx_hoofs."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/opt/ros/humble/lib/x86_64-linux-gnu/cmake/iceoryx_hoofs"
+		},
+		{
+			"name" : "iceoryx_posh_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for iceoryx_posh."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/opt/ros/humble/lib/x86_64-linux-gnu/cmake/iceoryx_posh"
+		},
+		{
 			"name" : "image_transport_DIR",
 			"properties" : 
 			[
@@ -3372,6 +3432,18 @@
 			],
 			"type" : "PATH",
 			"value" : "/opt/ros/humble/share/rmw/cmake"
+		},
+		{
+			"name" : "rmw_cyclonedds_cpp_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for rmw_cyclonedds_cpp."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake"
 		},
 		{
 			"name" : "rmw_dds_common_DIR",

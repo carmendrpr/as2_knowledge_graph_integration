@@ -43,27 +43,37 @@ class IntegrationService(RclNode):
 
         """Timers"""
         self.timer_1 = self.create_timer(3.0, self.create_node_callback)
-        self.timer_2 = self.create_timer(5.0, self.create_node_volando_callback)
-        self.timer_3 = self.create_timer(8.0, self.create_edge_callback)
+        self.timer_2 = self.create_timer(3.0, self.create_node_flying_callback)
+        self.timer_3 = self.create_timer(6.0, self.create_edge_callback)
+        self.timer_4 = self.create_timer(3.0, self.remove_edge_calback)
 
         """Subscription"""
         self.subscription = self.create_subscription(
             PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)
 
         """Clients"""
-        self.cli_create_node = self.create_client(CreateNode, 'create_node')
-        self.cli_create_node_status = self.create_client(CreateNode, 'create_node')
-        self.cli_create_edge = self.create_client(CreateEdge, 'create_edge')
+        self.cli_create_node = self.create_client(CreateNode, '/create_node')
+        self.cli_create_node_status = self.create_client(CreateNode, '/create_node')
+        self.cli_create_edge = self.create_client(CreateEdge, '/create_edge')
+        self.cli_remove_edge = self.create_client(CreateEdge, '/remove_edge')
 
         # Checking if the services are available
         while not self.cli_create_node.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
+            self.get_logger().info('service create_node not available, waiting again...')
+        while not self.cli_create_node_status.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service create_node not available, waiting again...')
+        while not self.cli_create_edge.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service create_edge not available, waiting again...')
+        while not self.cli_remove_edge.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service remove_edge not available, waiting again...')
 
+        # ¿podria crear una lista para integrar todas estas variables?
         self.current_pose_ = None
         self.current_node_ = None
         self.future_resp_node = None
         self.future_resp_status = None
         self.future_resp_edge = None
+        self.future_resp_rm_edge = None
 
     def read_pose_callback(self, msg: PoseStamped) -> None:
         """Call for the pose info topic"""
@@ -79,7 +89,7 @@ class IntegrationService(RclNode):
         req_edge = CreateEdge.Request()
 
         req.node = aux_node
-        req_status.node = utils.node_format(class_name="", node_name="volando")
+        req_status.node = utils.node_format(class_name="status", node_name="flying")
         req_edge.edge = utils.edge_format(
             edge_class='is', source_node=aux_node.node_name, target_node=req_status.node.node_name)
 
@@ -87,30 +97,40 @@ class IntegrationService(RclNode):
         if self.future_resp_node is None:
             self.future_resp_node = self.cli_create_node.call_async(req)
 
-        if msg.pose.position.z > 0:
+        if msg.pose.position.z > 0.5:
             if self.future_resp_status is None:
                 self.future_resp_status = self.cli_create_node_status.call_async(req_status)
+            if self.future_resp_edge is None:
+                self.future_resp_edge = self.cli_create_edge.call_async(req_edge)
 
-        if self.future_resp_edge is None:
-            self.future_resp_edge = self.cli_create_edge.call_async(req_edge)
+        if msg.pose.position.z < 0.5:
+            if self.future_resp_rm_edge is None:
+                self.future_resp_rm_edge = self.cli_remove_edge.call_async(req_edge)
 
     def create_node_callback(self):
-        self.get_logger().info('Timer 3 executing')
+        self.get_logger().info('Waiting for create_node ')
         # checking if resp is done
         if self.future_resp_node is not None:
             if self.future_resp_node.done():
                 print('the node dron is created', self.future_resp_node.result())
                 self.future_resp_node = None
 
-    def create_node_volando_callback(self):
-        self.get_logger().info('Timer 5 executing')
+    def create_node_flying_callback(self):
+        self.get_logger().info('Waiting for create_node_flying')
         if self.future_resp_status is not None:
             if self.future_resp_status.done():
                 print('the node volando is created', self.future_resp_status.result())
                 self.future_resp_status = None
 
     def create_edge_callback(self):
-        self.get_logger().info('Timer 6 executing')
+        self.get_logger().info('Waiting for create_edge')
+        if self.future_resp_edge is not None:
+            if self.future_resp_edge.done():
+                print('the edge is created', self.future_resp_edge.result())
+                self.future_resp_edge = None
+
+    def remove_edge_calback(self):
+        self.get_logger().info('Waiting for remove_edge')
         if self.future_resp_edge is not None:
             if self.future_resp_edge.done():
                 print('the edge is created', self.future_resp_edge.result())
