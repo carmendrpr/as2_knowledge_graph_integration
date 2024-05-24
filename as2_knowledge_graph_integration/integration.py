@@ -131,10 +131,10 @@ class IntegrationService(RclNode):
 
     def remove_edge_calback(self):
         self.get_logger().info('Waiting for remove_edge')
-        if self.future_resp_edge is not None:
-            if self.future_resp_edge.done():
-                print('the edge is created', self.future_resp_edge.result())
-                self.future_resp_edge = None
+        if self.future_resp_rm_edge is not None:
+            if self.future_resp_rm_edge.done():
+                print('the edge is created', self.future_resp_rm_edge.result())
+                self.future_resp_rm_edge = None
 
 
 def main():
