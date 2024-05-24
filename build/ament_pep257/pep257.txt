@@ -3,13 +3,13 @@
 
 checking ./as2_knowledge_graph_integration/__init__.py
 checking ./as2_knowledge_graph_integration/integration.py
-./as2_knowledge_graph_integration/integration.py:69 in public method `read_pose_callback`: D400: First line should end with a period (not 'c')
-./as2_knowledge_graph_integration/integration.py:69 in public method `read_pose_callback`: D415: First line should end with a period, question mark, or exclamation point (not 'c')
+./as2_knowledge_graph_integration/integration.py:79 in public method `read_pose_callback`: D400: First line should end with a period (not 'c')
+./as2_knowledge_graph_integration/integration.py:79 in public method `read_pose_callback`: D415: First line should end with a period, question mark, or exclamation point (not 'c')
 checking ./as2_knowledge_graph_integration/utils.py
 checking ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/__init__.py
 checking ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py
-./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:69 in public method `read_pose_callback`: D400: First line should end with a period (not 'c')
-./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:69 in public method `read_pose_callback`: D415: First line should end with a period, question mark, or exclamation point (not 'c')
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:79 in public method `read_pose_callback`: D400: First line should end with a period (not 'c')
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:79 in public method `read_pose_callback`: D415: First line should end with a period, question mark, or exclamation point (not 'c')
 checking ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py
 checking ./build/ament_cmake_python/as2_knowledge_graph_integration/setup.py
 4 errors

@@ -26,7 +26,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-
+import math
 from knowledge_graph_msgs.msg import Node, Edge, Content, Property
 
 
@@ -62,3 +62,18 @@ def edge_format(edge_class, source_node, target_node) -> Edge:
     edge.source_node = source_node
     edge.target_node = target_node
     return edge
+
+
+def calculate_distance(node_prop_1, node_prop_2) -> float:
+    aux_prop_1 = Property()
+    aux_prop_2 = Property()
+    aux_prop_1 = node_prop_1
+    aux_prop_2 = node_prop_2
+    if (aux_prop_1.key == 'position'):
+        if (aux_prop_2.key == 'position'):
+            distance = None
+            for i in 3:
+                aux = (aux_prop_1.value.float_vector.pop(i)) - \
+                    (aux_prop_2.value.float_vector.pop(i))**2
+                distance = distance + aux
+            return math.sqrt(distance)

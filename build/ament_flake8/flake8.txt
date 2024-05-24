@@ -25,10 +25,10 @@ from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
                                                                                                    ^
         """Call for the pose info topic"""
 ^
-        req_status.node = utils.node_format(class_name="", node_name="volando")
+        req_status.node = utils.node_format(class_name="status", node_name="flying")
                                                        ^
-        req_status.node = utils.node_format(class_name="", node_name="volando")
-                                                                     ^
+        req_status.node = utils.node_format(class_name="status", node_name="flying")
+                                                                           ^
     import time
     ^
 from knowledge_graph_msgs.msg import Node, Edge, Content, Property
@@ -55,10 +55,10 @@ from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
                                                                                                    ^
         """Call for the pose info topic"""
 ^
-        req_status.node = utils.node_format(class_name="", node_name="volando")
+        req_status.node = utils.node_format(class_name="status", node_name="flying")
                                                        ^
-        req_status.node = utils.node_format(class_name="", node_name="volando")
-                                                                     ^
+        req_status.node = utils.node_format(class_name="status", node_name="flying")
+                                                                           ^
     import time
     ^
 2     D400 First line should end with a period
@@ -90,15 +90,15 @@ from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
 
 ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:36:1: F401 'rclpy.qos.qos_profile_system_default' imported but unused
 
-./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:51:100: E501 line too long (100 > 99 characters)
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:52:100: E501 line too long (100 > 99 characters)
 
-./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:69:1: D400 First line should end with a period
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:79:1: D400 First line should end with a period
 
-./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:82:56: Q000 Double quotes found but single quotes preferred
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:92:56: Q000 Double quotes found but single quotes preferred
 
-./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:82:70: Q000 Double quotes found but single quotes preferred
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:92:76: Q000 Double quotes found but single quotes preferred
 
-./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:125:5: F811 redefinition of unused 'time' from line 31
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:145:5: F811 redefinition of unused 'time' from line 31
 
 ./as2_knowledge_graph_integration/utils.py:30:1: F401 'knowledge_graph_msgs.msg.Content' imported but unused
 
@@ -120,15 +120,15 @@ from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
 
 ./as2_knowledge_graph_integration/integration.py:36:1: F401 'rclpy.qos.qos_profile_system_default' imported but unused
 
-./as2_knowledge_graph_integration/integration.py:51:100: E501 line too long (100 > 99 characters)
+./as2_knowledge_graph_integration/integration.py:52:100: E501 line too long (100 > 99 characters)
 
-./as2_knowledge_graph_integration/integration.py:69:1: D400 First line should end with a period
+./as2_knowledge_graph_integration/integration.py:79:1: D400 First line should end with a period
 
-./as2_knowledge_graph_integration/integration.py:82:56: Q000 Double quotes found but single quotes preferred
+./as2_knowledge_graph_integration/integration.py:92:56: Q000 Double quotes found but single quotes preferred
 
-./as2_knowledge_graph_integration/integration.py:82:70: Q000 Double quotes found but single quotes preferred
+./as2_knowledge_graph_integration/integration.py:92:76: Q000 Double quotes found but single quotes preferred
 
-./as2_knowledge_graph_integration/integration.py:125:5: F811 redefinition of unused 'time' from line 31
+./as2_knowledge_graph_integration/integration.py:145:5: F811 redefinition of unused 'time' from line 31
 
 
 7 files checked

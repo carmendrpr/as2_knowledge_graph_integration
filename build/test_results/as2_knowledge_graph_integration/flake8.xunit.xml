@@ -4,7 +4,7 @@
   tests="30"
   errors="0"
   failures="30"
-  time="0.529"
+  time="0.297"
 >
   <testcase
     name="F401 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py:30:1)"
@@ -67,31 +67,31 @@
       <failure message="'rclpy.qos.qos_profile_system_default' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
   </testcase>
   <testcase
-    name="E501 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:51:100)"
+    name="E501 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:52:100)"
     classname="as2_knowledge_graph_integration.flake8"
   >
       <failure message="line too long (100 &gt; 99 characters):&#10;            PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)&#10;"/>
   </testcase>
   <testcase
-    name="D400 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:69:1)"
+    name="D400 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:79:1)"
     classname="as2_knowledge_graph_integration.flake8"
   >
       <failure message='First line should end with a period:&#10;        """Call for the pose info topic"""&#10;'/>
   </testcase>
   <testcase
-    name="Q000 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:82:56)"
+    name="Q000 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:92:56)"
     classname="as2_knowledge_graph_integration.flake8"
   >
-      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="", node_name="volando")&#10;'/>
+      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="status", node_name="flying")&#10;'/>
   </testcase>
   <testcase
-    name="Q000 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:82:70)"
+    name="Q000 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:92:76)"
     classname="as2_knowledge_graph_integration.flake8"
   >
-      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="", node_name="volando")&#10;'/>
+      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="status", node_name="flying")&#10;'/>
   </testcase>
   <testcase
-    name="F811 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:125:5)"
+    name="F811 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/integration.py:145:5)"
     classname="as2_knowledge_graph_integration.flake8"
   >
       <failure message="redefinition of unused 'time' from line 31:&#10;    import time&#10;"/>
@@ -157,31 +157,31 @@
       <failure message="'rclpy.qos.qos_profile_system_default' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
   </testcase>
   <testcase
-    name="E501 (./as2_knowledge_graph_integration/integration.py:51:100)"
+    name="E501 (./as2_knowledge_graph_integration/integration.py:52:100)"
     classname="as2_knowledge_graph_integration.flake8"
   >
       <failure message="line too long (100 &gt; 99 characters):&#10;            PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)&#10;"/>
   </testcase>
   <testcase
-    name="D400 (./as2_knowledge_graph_integration/integration.py:69:1)"
+    name="D400 (./as2_knowledge_graph_integration/integration.py:79:1)"
     classname="as2_knowledge_graph_integration.flake8"
   >
       <failure message='First line should end with a period:&#10;        """Call for the pose info topic"""&#10;'/>
   </testcase>
   <testcase
-    name="Q000 (./as2_knowledge_graph_integration/integration.py:82:56)"
+    name="Q000 (./as2_knowledge_graph_integration/integration.py:92:56)"
     classname="as2_knowledge_graph_integration.flake8"
   >
-      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="", node_name="volando")&#10;'/>
+      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="status", node_name="flying")&#10;'/>
   </testcase>
   <testcase
-    name="Q000 (./as2_knowledge_graph_integration/integration.py:82:70)"
+    name="Q000 (./as2_knowledge_graph_integration/integration.py:92:76)"
     classname="as2_knowledge_graph_integration.flake8"
   >
-      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="", node_name="volando")&#10;'/>
+      <failure message='Double quotes found but single quotes preferred:&#10;        req_status.node = utils.node_format(class_name="status", node_name="flying")&#10;'/>
   </testcase>
   <testcase
-    name="F811 (./as2_knowledge_graph_integration/integration.py:125:5)"
+    name="F811 (./as2_knowledge_graph_integration/integration.py:145:5)"
     classname="as2_knowledge_graph_integration.flake8"
   >
       <failure message="redefinition of unused 'time' from line 31:&#10;    import time&#10;"/>
