@@ -29,7 +29,7 @@
 import utils
 import rclpy
 from rclpy.node import Node as RclNode
-from as2_knowledge_graph_msgs.srv import ReadEdgeGraph, ReadGraph, ReadProperty
+from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph
 from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
 
 
@@ -40,15 +40,26 @@ class ReadKnowledgeService(RclNode):
         """Timers"""
         self.timer = self.create_timer(0.5, self.general_calback)
         self.timer_check_distance = self.create_timer(1.0, self.check_distance_callback)
+        self.timer_check_edge = self.create_timer(1.0, self.check_edge)
         """Clients"""
-        self.cli_read_nodes_of_type_dron = self.create_client(ReadGraph, '/read_graph')
+        self.cli_read_nodes_of_type_dron = self.create_client(ReadGraph, '/read_node_graph')
+        self.cli_create_edge_near = self.create_client(CreateEdge, '/create_edge')
+        self.cli_exist_edge = self.create_client(ReadEdgeGraph, '/read_edge_source_target_graph')
 
     # Checking if the services are available
         while not self.cli_read_nodes_of_type_dron.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service read_nodes is not available, waiting again...')
 
+        while not self.cli_create_edge_near.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service read_nodes is not available, waiting again...')
+
+        while not self.cli_exist_edge.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service read_nodes is not available, waiting again...')
+
     # Create future response
         self.future_resp_nodes_info = None
+        self.future_resp_create_edge = None
+        self.future_resp_exist_edge = None
 
     def general_calback(self) -> None:
         """Main callback"""
@@ -64,16 +75,40 @@ class ReadKnowledgeService(RclNode):
                 response = ReadGraph.Response()
                 response = self.future_resp_nodes_info.result()
                 nodes = response.nodes
-                # print(response.nodes)
-                print(f'lenght : {len(response.nodes)}')
-                for node in nodes:
-                    print(node)
-                #     j = i + 1
-                #     for j in range(len(self.response)):
-                #         self.distance = utils.calculate_distance(self.response(
-                #             i).properties, self.response(j).properties)
-                #         print('the distance is', self.distance)
+                print(f'lenght : {len(nodes)}')
+                for index, node in enumerate(nodes):
+                    for index_aux in range(index + 1, len(nodes)):
+                        aux_node = nodes[index_aux]
+                        aux_prop_1 = utils.look_for_property(node.properties, 'Position')
+                        aux_prop_2 = utils.look_for_property(aux_node.properties, 'Position')
+                        self.distance = utils.calculate_distance(
+                            aux_prop_1, aux_prop_2)
+                        print('the distance is', self.distance)
+                        req_aux_edge = CreateEdge.Request()
+                        req_exist_edge = ReadEdgeGraph.Request()
+                        req_aux_edge.edge = utils.edge_format(
+                            edge_class='near', source_node=node.node_name, target_node=aux_node.node_name)
+                        req_exist_edge.edge_class = "near"
+                        if self.distance < 0.7:
+                            if self.future_resp_create_edge is None:
+                                print("estoy")
+                                self.future_resp_create_edge = self.cli_create_edge_near.call_async(
+                                    req_aux_edge)
+
+                        if self.future_resp_exist_edge is None:
+                            self.future_resp_exist_edge = self.cli_exist_edge.call_async(
+                                req_exist_edge)
+                            pass
                 self.future_resp_nodes_info = None
+
+    def check_edge(self):
+        if self.future_resp_create_edge is not None:
+            if self.future_resp_create_edge.done():
+                self.future_resp_create_edge = None
+        if self.future_resp_exist_edge is not None:
+            if self.future_resp_exist_edge.done():
+                print(self.future_resp_exist_edge.result())
+                self.future_resp_exist_edge = None
 
 
 def main():

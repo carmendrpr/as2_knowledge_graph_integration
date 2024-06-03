@@ -41,18 +41,28 @@ def pos_prop_from_pose(pose):
     return prop
 
 
-def node_from_msg(class_name, node_name, msg) -> Node:
+def priority_prop(priority):
+    prop = Property()
+    prop.key = 'Priority'
+    prop.value.type = 1
+    prop.value.int_value = priority
+    return prop
+
+
+def node_from_msg(class_name, node_name, msg, priority) -> Node:
     node = Node()
     node.node_name = node_name
     node.node_class = class_name
+    node.properties.append(priority_prop(priority))
     node.properties.append(pos_prop_from_pose(msg))
     return node
 
 
-def node_format(class_name, node_name) -> Node:
+def node_format(class_name, node_name, priority) -> Node:
     node = Node()
     node.node_name = node_name
     node.node_class = class_name
+    node.properties.append(priority_prop(priority))
     return node
 
 
@@ -65,15 +75,27 @@ def edge_format(edge_class, source_node, target_node) -> Edge:
 
 
 def calculate_distance(node_prop_1, node_prop_2) -> float:
-    aux_prop_1 = Property()
-    aux_prop_2 = Property()
     aux_prop_1 = node_prop_1
     aux_prop_2 = node_prop_2
-    if (aux_prop_1.key == 'position'):
-        if (aux_prop_2.key == 'position'):
-            distance = None
-            for i in 3:
-                aux = (aux_prop_1.value.float_vector.pop(i)) - \
-                    (aux_prop_2.value.float_vector.pop(i))**2
-                distance = distance + aux
-            return math.sqrt(distance)
+    distance = 0
+    aux = 0
+    for i in range(2):
+        aux = ((aux_prop_1.value.float_vector[i]) -
+               (aux_prop_2.value.float_vector[i]))**2
+        distance = distance + aux
+    return math.sqrt(distance)
+
+
+def look_for_property(list_prop, prop_key) -> Property:
+    for aux_prop in list_prop:
+        if aux_prop.key == prop_key:
+            print(aux_prop.value.float_vector)
+            return aux_prop
+
+
+def look_for_nodes(list_nodes, node_class):
+    nodes = []
+    for aux_node in list_nodes:
+        if aux_node.node_class == node_class:
+            nodes.append(aux_node)
+    return nodes

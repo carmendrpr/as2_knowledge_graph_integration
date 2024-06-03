@@ -78,7 +78,7 @@ class InsertKnowledgeService(RclNode):
     def read_pose_callback(self, msg: PoseStamped) -> None:
         """Call for the pose info topic"""
         print('suscribe to pose')
-        aux_node = utils.node_from_msg('Dron', self.get_namespace(), msg.pose)
+        aux_node = utils.node_from_msg('Dron', self.get_namespace(), msg.pose, priority=1)
 
         # Sending request to add node
         req = CreateNode.Request()
@@ -86,7 +86,7 @@ class InsertKnowledgeService(RclNode):
         req_edge = CreateEdge.Request()
 
         req.node = aux_node
-        req_status.node = utils.node_format(class_name="status", node_name="flying")
+        req_status.node = utils.node_format(class_name="status", node_name="flying", priority=2)
         req_edge.edge = utils.edge_format(
             edge_class='is', source_node=aux_node.node_name, target_node=req_status.node.node_name)
 
