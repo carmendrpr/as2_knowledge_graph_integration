@@ -45,21 +45,26 @@ class ReadKnowledgeService(RclNode):
         self.cli_read_nodes_of_type_dron = self.create_client(ReadGraph, '/read_node_graph')
         self.cli_create_edge_near = self.create_client(CreateEdge, '/create_edge')
         self.cli_exist_edge = self.create_client(ReadEdgeGraph, '/read_edge_source_target_graph')
+        self.cli_remove_edge = self.create_client(CreateEdge, '/remove_edge')
 
     # Checking if the services are available
         while not self.cli_read_nodes_of_type_dron.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service read_nodes is not available, waiting again...')
 
         while not self.cli_create_edge_near.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service read_nodes is not available, waiting again...')
+            self.get_logger().info('service create_edge is not available, waiting again...')
 
         while not self.cli_exist_edge.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service read_nodes is not available, waiting again...')
+            self.get_logger().info('service read_edge_source_target_graph is not available, waiting again...')
+
+        while not self.cli_remove_edge.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service remove_edge is not available, waiting again...')
 
     # Create future response
         self.future_resp_nodes_info = None
         self.future_resp_create_edge = None
         self.future_resp_exist_edge = None
+        self.future_resp_remove_edge = None
 
     def general_calback(self) -> None:
         """Main callback"""
@@ -91,24 +96,22 @@ class ReadKnowledgeService(RclNode):
                         req_exist_edge.edge_class = "near"
                         if self.distance < 0.7:
                             if self.future_resp_create_edge is None:
-                                print("estoy")
                                 self.future_resp_create_edge = self.cli_create_edge_near.call_async(
                                     req_aux_edge)
+                        elif self.future_resp_remove_edge is None:
+                            self.future_resp_remove_edge = self.cli_remove_edge.call_async(
+                                req_aux_edge)
 
-                        if self.future_resp_exist_edge is None:
-                            self.future_resp_exist_edge = self.cli_exist_edge.call_async(
-                                req_exist_edge)
-                            pass
                 self.future_resp_nodes_info = None
 
     def check_edge(self):
         if self.future_resp_create_edge is not None:
             if self.future_resp_create_edge.done():
                 self.future_resp_create_edge = None
-        if self.future_resp_exist_edge is not None:
-            if self.future_resp_exist_edge.done():
-                print(self.future_resp_exist_edge.result())
-                self.future_resp_exist_edge = None
+                print("Succssefully create the edge")
+        if self.future_resp_remove_edge is not None:
+            if self.future_resp_remove_edge.done():
+                self.future_resp_remove_edge = None
 
 
 def main():

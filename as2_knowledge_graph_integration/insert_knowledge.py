@@ -30,6 +30,7 @@
 import utils
 import time
 from geometry_msgs.msg import PoseStamped
+from sensor_msgs.msg import BatteryState
 from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge
 import rclpy
 from rclpy.node import Node as RclNode
@@ -50,46 +51,82 @@ class InsertKnowledgeService(RclNode):
         """Subscription"""
         self.subscription = self.create_subscription(
             PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)
-
+        self.batery_subscription = self.create_subscription(
+            BatteryState, 'sensor_measurements/battery', self.read_baterry_state_callaback, qos_profile_sensor_data)
         """Clients"""
         self.cli_create_node = self.create_client(CreateNode, '/create_node')
+        self.cli_create_battery_node = self.create_client(CreateNode, '/create_node')
         self.cli_create_node_status = self.create_client(CreateNode, '/create_node')
         self.cli_create_edge = self.create_client(CreateEdge, '/create_edge')
+        self.cli_create_battery_edge = self.create_client(CreateEdge, '/create_edge')
         self.cli_remove_edge = self.create_client(CreateEdge, '/remove_edge')
+        self.cli_remove_node = self.create_client(CreateNode, '/remove_node')
 
         # Checking if the services are available
         while not self.cli_create_node.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service create_node is not available, waiting again...')
+        while not self.cli_create_battery_node.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service create_node is not available, waiting again...')
         while not self.cli_create_node_status.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service create_node is not available, waiting again...')
         while not self.cli_create_edge.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service create_edge is not available, waiting again...')
+        while not self.cli_create_battery_edge.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service create_edge is not available, waiting again...')
         while not self.cli_remove_edge.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service remove_edge is not available, waiting again...')
+        while not self.cli_remove_node.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service remove_node is not available, waiting again...')
 
         # ¿podria crear una lista para integrar todas estas variables?
-        self.current_pose_ = None
-        self.current_node_ = None
+
+        self.dron_node = None
         self.future_resp_node = None
+        self.future_resp_battery_node = None
+        self.future_resp_battery_edge = None
         self.future_resp_status = None
         self.future_resp_edge = None
         self.future_resp_rm_edge = None
 
+    def read_baterry_state_callaback(self, msg: BatteryState) -> None:
+        """Call for battery state info"""
+        print('subscribe to battery')
+        aux_node = utils.node_format_with_prop('Baterry', 'Charge', msg.charge, priority=1)
+        req = CreateNode.Request()
+        req.node = aux_node
+        req_battery_edge = CreateEdge.Request()
+        req_battery_edge_charge = CreateEdge.Request()
+        req_battery_edge.edge = utils.edge_format(
+            edge_class='is', source_node=self.dron_node.node_name, target_node=req.node.node_name)
+        req_battery_edge_charge.edge = utils.edge_format(
+            edge_class='is not', source_node=self.dron_node.node_name, target_node=req.node.node_name)
+        if self.future_resp_battery_node is None:
+            self.future_resp_battery_node = self.cli_create_battery_node.call_async(req)
+        if msg.charge > 50:
+            if self.future_resp_battery_edge is None:
+                self.future_resp_battery_edge = self.cli_create_battery_edge.call_async(
+                    req_battery_edge)
+                self.cli_remove_edge.call(req_battery_edge_charge)
+        else:
+            if self.future_resp_battery_edge is None:
+                self.future_resp_battery_edge = self.cli_create_battery_edge.call_async(
+                    req_battery_edge_charge)
+                self.cli_create_battery_edge.call_async(req_battery_edge)
+
     def read_pose_callback(self, msg: PoseStamped) -> None:
         """Call for the pose info topic"""
         print('suscribe to pose')
-        aux_node = utils.node_from_msg('Dron', self.get_namespace(), msg.pose, priority=1)
+        self.dron_node = utils.node_from_msg('Dron', self.get_namespace(), msg.pose, priority=1)
 
         # Sending request to add node
         req = CreateNode.Request()
         req_status = CreateNode.Request()
         req_edge = CreateEdge.Request()
 
-        req.node = aux_node
+        req.node = self.dron_node
         req_status.node = utils.node_format(class_name="status", node_name="flying", priority=2)
         req_edge.edge = utils.edge_format(
-            edge_class='is', source_node=aux_node.node_name, target_node=req_status.node.node_name)
-
+            edge_class='is', source_node=self.dron_node.node_name, target_node=req_status.node.node_name)
         # Creating a future
         if self.future_resp_node is None:
             self.future_resp_node = self.cli_create_node.call_async(req)

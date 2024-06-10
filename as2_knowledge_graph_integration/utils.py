@@ -41,6 +41,14 @@ def pos_prop_from_pose(pose):
     return prop
 
 
+def battery_prop_from_msg(battery):
+    prop = Property()
+    prop.key = 'Battery'
+    prop.value.type = 2
+    prop.value.float_value = battery
+    return prop
+
+
 def priority_prop(priority):
     prop = Property()
     prop.key = 'Priority'
@@ -63,6 +71,15 @@ def node_format(class_name, node_name, priority) -> Node:
     node.node_name = node_name
     node.node_class = class_name
     node.properties.append(priority_prop(priority))
+    return node
+
+
+def node_format_with_prop(class_name, node_name, msg, priority) -> Node:
+    node = Node()
+    node.node_name = node_name
+    node.node_class = class_name
+    node.properties.append(priority_prop(priority))
+    # node.properties.append(battery_prop_from_msg(msg))
     return node
 
 
