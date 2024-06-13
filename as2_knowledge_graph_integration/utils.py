@@ -49,6 +49,19 @@ def battery_prop_from_msg(battery):
     return prop
 
 
+def status_from_platform(platform_info) -> str:
+    node_name = str()
+    if platform_info == 1:
+        node_name = 'Landed'
+    elif platform_info == 2:
+        node_name = 'Taking off'
+    elif platform_info == 3:
+        node_name = 'Flying'
+    elif platform_info == 4:
+        node_name = 'Landing'
+    return node_name
+
+
 def priority_prop(priority):
     prop = Property()
     prop.key = 'Priority'
