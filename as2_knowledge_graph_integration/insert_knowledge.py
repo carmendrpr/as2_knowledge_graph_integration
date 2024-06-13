@@ -31,7 +31,7 @@ import utils
 import time
 from geometry_msgs.msg import PoseStamped
 from sensor_msgs.msg import BatteryState
-from as2_msgs.msg import PlatformInfo, TrajectoryPoint
+from as2_msgs.msg import PlatformInfo
 from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge
 import rclpy
 from rclpy.node import Node as RclNode
@@ -46,6 +46,7 @@ class InsertKnowledgeService(RclNode):
         """Timers"""
         self.timer_1 = self.create_timer(3.0, self.check_futures)
         self.timer_2 = self.create_timer(2.0, self.create_node)
+        self.timer_3 = self.create_timer(1.0, self.simulate)
 
         """Subscription"""
         self.subscription = self.create_subscription(
@@ -54,8 +55,6 @@ class InsertKnowledgeService(RclNode):
             BatteryState, 'sensor_measurements/battery', self.read_baterry_state_callback, qos_profile_sensor_data)
         self.subscription = self.create_subscription(
             PlatformInfo, 'platform/info', self.read_status_callback, qos_profile_sensor_data)
-        self.subscription = self.create_subscription(
-            TrajectoryPoint, 'motion_reference/trajectory', self.read_trayectory, qos_profile_sensor_data)
 
         """Clients"""
         self.cli_create_node = self.create_client(CreateNode, '/create_node')
@@ -90,9 +89,11 @@ class InsertKnowledgeService(RclNode):
         self.future_resp_edge_status = None
         self.future_resp_person = None
         self.future_resp_home = None
-
-    def read_trayectory(self, msg: TrajectoryPoint) -> None:
-        pass
+        self.future_resp_edge_person = None
+        self.future_resp_edge_home = None
+        self.future_resp_edge_person_rm = None
+        self.future_resp_edge_home_rm = None
+        self.future_resp_edge_person_seeing = None
 
     def read_status_callback(self, msg: PlatformInfo) -> None:
         """Call for status info"""
@@ -105,7 +106,6 @@ class InsertKnowledgeService(RclNode):
         req.node = aux_node
         req_edge.edge = utils.edge_format(
             edge_class='is', source_node=self.dron_node.node_name, target_node=req.node.node_name)
-
         if self.future_resp_status_platform is None:
             self.future_resp_status_platform = self.cli_create_node.call_async(req)
         if self.future_resp_edge_status is None:
@@ -138,7 +138,8 @@ class InsertKnowledgeService(RclNode):
                     self.future_resp_battery_edge_rm = self.cli_remove_edge.call_async(
                         req_battery_edge_charge)
 
-            if self.future_resp_battery_edge is None:
+            elif self.future_resp_battery_edge is None:
+                print('dentro')
                 self.future_resp_battery_edge = self.cli_create_edge.call_async(
                     req_battery_edge_charge)
                 if self.future_resp_battery_edge_rm is None:
@@ -147,28 +148,28 @@ class InsertKnowledgeService(RclNode):
 
     def read_pose_callback(self, msg: PoseStamped) -> None:
         """Call for the pose info topic"""
-        print('suscribe to pose')
+        print('subscribe to pose')
         self.dron_node = utils.node_from_msg('Dron', self.get_namespace(), msg.pose, priority=1)
 
-        # Sending request to add node
+        """ Sending request to add node"""
         req = CreateNode.Request()
-        req_status = CreateNode.Request()
-        req_edge = CreateEdge.Request()
+        # req_status = CreateNode.Request()
+        # req_edge = CreateEdge.Request()
 
         req.node = self.dron_node
-        req_status.node = utils.node_format(
-            class_name="position", node_name="current pose", priority=2)
-        req_edge.edge = utils.edge_format(
-            edge_class='at', source_node=self.dron_node.node_name, target_node=req_status.node.node_name)
+        # req_status.node = utils.node_format(
+        #     class_name="position", node_name="current pose", priority=2)
+        # req_edge.edge = utils.edge_format(
+        #     edge_class='at', source_node=self.dron_node.node_name, target_node=req_status.node.node_name)
 
         # Creating a future
         if self.future_resp_node is None:
             self.future_resp_node = self.cli_create_node.call_async(req)
 
-        if self.future_resp_status is None:
-            self.future_resp_status = self.cli_create_node.call_async(req_status)
-        if self.future_resp_edge is None:
-            self.future_resp_edge = self.cli_create_edge.call_async(req_edge)
+        # if self.future_resp_status is None:
+        #     self.future_resp_status = self.cli_create_node.call_async(req_status)
+        # if self.future_resp_edge is None:
+        #     self.future_resp_edge = self.cli_create_edge.call_async(req_edge)
 
     def create_node(self):
         req_person = CreateNode.Request()
@@ -180,6 +181,49 @@ class InsertKnowledgeService(RclNode):
         if self.future_resp_home is None:
             self.future_resp_home = self.cli_create_node.call_async(req_home)
 
+    def simulate(self):
+        """Requests"""
+        req_edge_person_looking = CreateEdge.Request()
+        req_edge_home_at = CreateEdge.Request()
+        req_edge_person_seeing = CreateEdge.Request()
+        req_edge_home_going = CreateEdge.Request()
+        req_edge_home_at.edge = utils.edge_format('at', self.dron_node.node_name, 'home')
+        req_edge_person_looking.edge = utils.edge_format(
+            'looking for', self.dron_node.node_name, 'paco')
+        req_edge_person_seeing.edge = utils.edge_format(
+            'seeing', self.dron_node.node_name, 'paco')
+        req_edge_home_going.edge = utils.edge_format(
+            'going to', self.dron_node.node_name, 'home')
+
+        if self.future_resp_edge_home is None:
+            self.future_resp_edge_home = self.cli_create_edge.call_async(req_edge_home_at)
+            print('at home')
+
+        if self.future_resp_edge_person is None:
+
+            self.future_resp_edge_person = self.cli_create_edge.call_async(req_edge_person_looking)
+            print('looking for')
+
+        if self.future_resp_edge_home is not None:
+            if self.future_resp_edge_home.done():
+                if self.future_resp_edge_home_rm is None:
+                    self.future_resp_edge_home_rm = self.cli_remove_edge.call_async(
+                        req_edge_home_at)
+
+                    print('rm')
+        if self.future_resp_edge_person is not None:
+            if self.future_resp_edge_person.done():
+                if self.future_resp_edge_person_rm is None:
+                    self.future_resp_edge_person_rm = self.cli_remove_edge.call_async(
+                        req_edge_person_looking)
+                    print('rm person')
+                    self.future_resp_edge_person_seeing = self.cli_create_edge.call_async(
+                        req_edge_person_seeing)
+        if self.future_resp_edge_person_seeing is not None:
+            if self.future_resp_edge_person_seeing.done():
+                self.future_resp_edge_home = self.cli_create_edge.call_async(
+                    req_edge_home_going)
+
     def check_futures(self):
         if self.future_resp_node is not None:
             if self.future_resp_node.done():
@@ -188,36 +232,40 @@ class InsertKnowledgeService(RclNode):
 
         if self.future_resp_status_platform is not None:
             if self.future_resp_status_platform.done():
-
                 print('status update', str(self.future_resp_status_platform.result()))
                 self.future_resp_status_platform = None
+        if self.future_resp_edge_status is not None:
+            if self.future_resp_edge_status.done():
+                print('edge status created')
+                self.future_resp_edge_status = None
 
         if self.future_resp_battery_node is not None:
             if self.future_resp_battery_node.done():
                 self.future_resp_battery_node = None
                 if self.future_resp_battery_edge is not None:
                     if self.future_resp_battery_edge.done():
+                        print('battery edge created')
                         self.future_resp_battery_edge = None
-                        print('battery created')
+
                 if self.future_resp_battery_edge_rm is not None:
                     if self.future_resp_battery_edge_rm.done():
+                        print('battery rm_edge created')
                         self.future_resp_battery_edge_rm = None
-                        print('battery not created')
 
-        if self.future_resp_status is not None:
-            if self.future_resp_status.done():
-                print('the node current pose is created?', str(self.future_resp_status.result()))
-                self.future_resp_status = None
+        # if self.future_resp_status is not None:
+        #     if self.future_resp_status.done():
+        #         print('the node current pose is created?', str(self.future_resp_status.result()))
+        #         self.future_resp_status = None
 
-        if self.future_resp_edge is not None:
-            if self.future_resp_edge.done():
-                print('the edge is  created?', str(self.future_resp_edge.result()))
-                self.future_resp_edge = None
+        # if self.future_resp_edge is not None:
+        #     if self.future_resp_edge.done():
+        #         print('the edge is  created?', str(self.future_resp_edge.result()))
+        #         self.future_resp_edge = None
 
-        if self.future_resp_rm_edge is not None:
-            if self.future_resp_rm_edge.done():
-                print('the edge  is removed ?', self.future_resp_rm_edge.result())
-                self.future_resp_rm_edge = None
+        # if self.future_resp_rm_edge is not None:
+        #     if self.future_resp_rm_edge.done():
+        #         print('the edge  is removed ?', self.future_resp_rm_edge.result())
+        #         self.future_resp_rm_edge = None
         if self.future_resp_person is not None:
             if self.future_resp_person.done():
                 print('the node person is created?', str(self.future_resp_person.result()))
