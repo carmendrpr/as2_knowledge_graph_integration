@@ -31,7 +31,7 @@ import utils
 import time
 from geometry_msgs.msg import PoseStamped
 from sensor_msgs.msg import BatteryState
-from as2_msgs.msg import PlatformInfo
+from as2_msgs.msg import PlatformInfo, TrajectoryPoint
 from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge
 import rclpy
 from rclpy.node import Node as RclNode
@@ -44,12 +44,8 @@ class InsertKnowledgeService(RclNode):
         super().__init__('insert_knowledge_node')
 
         """Timers"""
-        self.timer_1 = self.create_timer(3.0, self.create_node_callback)
-        self.timer_2 = self.create_timer(3.0, self.create_node_flying_callback)
-        self.timer_3 = self.create_timer(6.0, self.create_edge_callback)
-        self.timer_4 = self.create_timer(3.0, self.remove_edge_calback)
-        self.timer_5 = self.create_timer(3.0, self.update_battery)
-        self.timer_6 = self.create_timer(3.0, self.update_status)
+        self.timer_1 = self.create_timer(3.0, self.check_futures)
+        self.timer_2 = self.create_timer(2.0, self.create_node)
 
         """Subscription"""
         self.subscription = self.create_subscription(
@@ -58,6 +54,8 @@ class InsertKnowledgeService(RclNode):
             BatteryState, 'sensor_measurements/battery', self.read_baterry_state_callback, qos_profile_sensor_data)
         self.subscription = self.create_subscription(
             PlatformInfo, 'platform/info', self.read_status_callback, qos_profile_sensor_data)
+        self.subscription = self.create_subscription(
+            TrajectoryPoint, 'motion_reference/trajectory', self.read_trayectory, qos_profile_sensor_data)
 
         """Clients"""
         self.cli_create_node = self.create_client(CreateNode, '/create_node')
@@ -90,6 +88,11 @@ class InsertKnowledgeService(RclNode):
         self.future_resp_battery_edge_rm = None
         self.future_resp_status_platform = None
         self.future_resp_edge_status = None
+        self.future_resp_person = None
+        self.future_resp_home = None
+
+    def read_trayectory(self, msg: TrajectoryPoint) -> None:
+        pass
 
     def read_status_callback(self, msg: PlatformInfo) -> None:
         """Call for status info"""
@@ -167,52 +170,62 @@ class InsertKnowledgeService(RclNode):
         if self.future_resp_edge is None:
             self.future_resp_edge = self.cli_create_edge.call_async(req_edge)
 
-    def update_status(self):
-        self.get_logger().info('Waitting to update status')
+    def create_node(self):
+        req_person = CreateNode.Request()
+        req_home = CreateNode.Request()
+        req_home.node = utils.node_home
+        req_person.node = utils.node_person
+        if self.future_resp_person is None:
+            self.future_resp_person = self.cli_create_node.call_async(req_person)
+        if self.future_resp_home is None:
+            self.future_resp_home = self.cli_create_node.call_async(req_home)
+
+    def check_futures(self):
+        if self.future_resp_node is not None:
+            if self.future_resp_node.done():
+                print('the node dron is created?', str(self.future_resp_node.result()))
+                self.future_resp_node = None
+
         if self.future_resp_status_platform is not None:
             if self.future_resp_status_platform.done():
+
+                print('status update', str(self.future_resp_status_platform.result()))
                 self.future_resp_status_platform = None
 
-    def update_battery(self):
-        self.get_logger().info('Waitting to update battery')
         if self.future_resp_battery_node is not None:
             if self.future_resp_battery_node.done():
                 self.future_resp_battery_node = None
                 if self.future_resp_battery_edge is not None:
                     if self.future_resp_battery_edge.done():
                         self.future_resp_battery_edge = None
+                        print('battery created')
                 if self.future_resp_battery_edge_rm is not None:
                     if self.future_resp_battery_edge_rm.done():
                         self.future_resp_battery_edge_rm = None
+                        print('battery not created')
 
-    def create_node_callback(self):
-        self.get_logger().info('Waiting for create_node ')
-        # checking if resp is done
-        if self.future_resp_node is not None:
-            if self.future_resp_node.done():
-                print('the node dron is created?', str(self.future_resp_node.result()))
-                self.future_resp_node = None
-
-    def create_node_flying_callback(self):
-        self.get_logger().info('Waiting for create_node_flying')
         if self.future_resp_status is not None:
             if self.future_resp_status.done():
-                print('the node flying is created?', str(self.future_resp_status.result()))
+                print('the node current pose is created?', str(self.future_resp_status.result()))
                 self.future_resp_status = None
 
-    def create_edge_callback(self):
-        self.get_logger().info('Waiting for create_edge')
         if self.future_resp_edge is not None:
             if self.future_resp_edge.done():
                 print('the edge is  created?', str(self.future_resp_edge.result()))
                 self.future_resp_edge = None
 
-    def remove_edge_calback(self):
-        self.get_logger().info('Waiting for remove_edge')
         if self.future_resp_rm_edge is not None:
             if self.future_resp_rm_edge.done():
                 print('the edge  is removed ?', self.future_resp_rm_edge.result())
                 self.future_resp_rm_edge = None
+        if self.future_resp_person is not None:
+            if self.future_resp_person.done():
+                print('the node person is created?', str(self.future_resp_person.result()))
+                self.future_resp_person = None
+        if self.future_resp_home is not None:
+            if self.future_resp_home.done():
+                print('the node home is created?', str(self.future_resp_home.result()))
+                self.future_resp_home = None
 
 
 def main():
