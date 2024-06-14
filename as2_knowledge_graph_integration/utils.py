@@ -28,32 +28,32 @@
 
 import math
 from knowledge_graph_msgs.msg import Node, Edge, Content, Property
+import parameters
 
-"""Node person"""
-node_person = Node()
-node_person.node_class = 'person'
-node_person.node_name = 'paco'
-prop_person = Property()
-prop_person.key = 'Position'
-prop_person.value.type = 7
-prop_person.value.float_vector.extend([2.5, 3, 1.2])
-node_person.properties.append(prop_person)
 
-"""Node Home"""
-node_home = Node()
-node_home.node_class = 'location'
-node_home.node_name = 'home'
-prop_home = Property()
-prop_home.key = 'Position'
-prop_home.value.type = 7
-prop_home.value.float_vector.extend([0, 0, 0])
-node_home.properties.append(prop_home)
+def node_from_geozone(geozone):
+    geozone = parameters.geozone
+    node = Node()
+    node.node_class = 'position'
+    node.node_name = 'geozone'
+    prop = Property()
+    keys = list(geozone.keys())
+    prop.key = keys[0]
+    prop.value.type = 7
+    vec1 = list(geozone['grid reference'].values())
+    prop.value.float_vector.extend(vec1)
+    node.properties.append(prop)
+    prop2 = Property()
+    prop2.key = keys[1]
+    vec2 = list(geozone['warning zone'].values())
+    prop2.value.float_vector.extend(vec2)
+    node.properties.append(prop2)
+    return node
 
 
 def pos_prop_from_pose(pose):
     prop = Property()
     prop.key = 'Position'
-    # prop.value.type = Property.VFLOAT
     prop.value.type = 7
     prop.value.float_vector.append(pose.position.x)
     prop.value.float_vector.append(pose.position.y)
