@@ -1,0 +1,281 @@
+-- run_test.py: invoking following command in '/home/carmendrpr/ros2_ws/src/as2_knowledge_graph_integration':
+ - /opt/ros/humble/bin/ament_flake8 --xunit-file /home/carmendrpr/ros2_ws/src/as2_knowledge_graph_integration/build/test_results/as2_knowledge_graph_integration/flake8.xunit.xml
+
+from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph
+^
+from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph
+^
+import parameters
+^
+from geometry_msgs.msg import PoseStamped
+^
+from as2_msgs.msg import PlatformInfo
+^
+from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge
+^
+from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge
+^
+from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
+^
+            PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)
+                                                                                                   ^
+            BatteryState, 'sensor_measurements/battery', self.read_baterry_state_callback, qos_profile_sensor_data)
+                                                                                                   ^
+        """Call for status info"""
+^
+        """Call for battery state info"""
+^
+        """Call for the pose info topic"""
+^
+        """Requests"""
+^
+        """Requests"""
+^
+from knowledge_graph_msgs.msg import Node, Edge, Content, Property
+^
+from knowledge_graph_msgs.msg import Node, Edge, Content, Property
+^
+from knowledge_graph_msgs.msg import Node, Edge, Content, Property
+^
+import rclpy
+^
+from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph
+^
+from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph
+^
+from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
+^
+from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
+^
+            self.get_logger().info('service read_edge_source_target_graph is not available, waiting again...')
+                                                                                                   ^
+        """Main callback"""
+^
+        """Main callback"""
+^
+                            edge_class='near', source_node=node.node_name, target_node=aux_node.node_name)
+                                                                                                   ^
+                        req_exist_edge.edge_class = "near"
+                                                    ^
+                                self.future_resp_create_edge = self.cli_create_edge_near.call_async(
+                                                                                                   ^
+                print("Succssefully create the edge")
+                      ^
+from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph
+^
+from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph
+^
+import parameters
+^
+from geometry_msgs.msg import PoseStamped
+^
+from as2_msgs.msg import PlatformInfo
+^
+from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge
+^
+from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge
+^
+from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
+^
+            PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)
+                                                                                                   ^
+            BatteryState, 'sensor_measurements/battery', self.read_baterry_state_callback, qos_profile_sensor_data)
+                                                                                                   ^
+        """Call for status info"""
+^
+        """Call for battery state info"""
+^
+        """Call for the pose info topic"""
+^
+        """Requests"""
+^
+        """Requests"""
+^
+from knowledge_graph_msgs.msg import Node, Edge, Content, Property
+^
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py:3:1: I101 Imported names are in the wrong order. Should be ReadEdgeGraph, ReadGraph
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py:3:1: I100 Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph' should be before 'from rclpy.node import Node'
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:31:1: I100 Import statements are in the wrong order. 'import parameters' should be before 'import utils'
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:32:1: I100 Import statements are in the wrong order. 'from geometry_msgs.msg import PoseStamped' should be before 'import parameters'
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:34:1: I100 Import statements are in the wrong order. 'from as2_msgs.msg import PlatformInfo' should be before 'from sensor_msgs.msg import BatteryState'
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:35:1: I101 Imported names are in the wrong order. Should be CreateEdge, CreateNode
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:35:1: I100 Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge' should be before 'from as2_msgs.msg import PlatformInfo'
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:38:1: F401 'rclpy.qos.qos_profile_system_default' imported but unused
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:52:100: E501 line too long (100 > 99 characters)
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:54:100: E501 line too long (115 > 99 characters)
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:101:1: D400 First line should end with a period
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:117:1: D400 First line should end with a period
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:150:1: D400 First line should end with a period
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:182:1: D400 First line should end with a period
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:182:1: D401 First line should be in imperative mood
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py:30:1: F401 'knowledge_graph_msgs.msg.Content' imported but unused
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py:30:1: I101 Imported names are in the wrong order. Should be Content, Edge, Node, Property
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py:30:1: I201 Missing newline between import groups. 'from knowledge_graph_msgs.msg import Node, Edge, Content, Property' is identified as Third Party and 'import math' is identified as Stdlib.
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:30:1: I100 Import statements are in the wrong order. 'import rclpy' should be before 'import utils'
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:32:1: I101 Imported names are in the wrong order. Should be CreateEdge, ReadEdgeGraph, ReadGraph
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:32:1: I100 Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph' should be before 'from rclpy.node import Node'
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:33:1: F401 'rclpy.qos.qos_profile_sensor_data' imported but unused
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:33:1: F401 'rclpy.qos.qos_profile_system_default' imported but unused
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:58:100: E501 line too long (110 > 99 characters)
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:70:1: D400 First line should end with a period
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:70:1: D401 First line should be in imperative mood; try rephrasing
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:95:100: E501 line too long (106 > 99 characters)
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:96:53: Q000 Double quotes found but single quotes preferred
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:99:100: E501 line too long (100 > 99 characters)
+
+./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:111:23: Q000 Double quotes found but single quotes preferred
+
+./as2_knowledge_graph_integration/read_graph.py:3:1: I101 Imported names are in the wrong order. Should be ReadEdgeGraph, ReadGraph
+
+./as2_knowledge_graph_integration/read_graph.py:3:1: I100 Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph' should be before 'from rclpy.node import Node'
+
+./as2_knowledge_graph_integration/insert_knowledge.py:31:1: I100 Import statements are in the wrong order. 'import parameters' should be before 'import utils'
+
+./as2_knowledge_graph_integration/insert_knowledge.py:32:1: I100 Import statements are in the wrong order. 'from geometry_msgs.msg import PoseStamped' should be before 'import parameters'
+
+./as2_knowledge_graph_integration/insert_knowledge.py:34:1: I100 Import statements are in the wrong order. 'from as2_msgs.msg import PlatformInfo' should be before 'from sensor_msgs.msg import BatteryState'
+
+./as2_knowledge_graph_integration/insert_knowledge.py:35:1: I101 Imported names are in the wrong order. Should be CreateEdge, CreateNode
+
+./as2_knowledge_graph_integration/insert_knowledge.py:35:1: I100 Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge' should be before 'from as2_msgs.msg import PlatformInfo'
+
+./as2_knowledge_graph_integration/insert_knowledge.py:38:1: F401 'rclpy.qos.qos_profile_system_default' imported but unused
+
+./as2_knowledge_graph_integration/insert_knowledge.py:52:100: E501 line too long (100 > 99 characters)
+
+./as2_knowledge_graph_integration/insert_knowledge.py:54:100: E501 line too long (115 > 99 characters)
+
+./as2_knowledge_graph_integration/insert_knowledge.py:101:1: D400 First line should end with a period
+
+./as2_knowledge_graph_integration/insert_knowledge.py:117:1: D400 First line should end with a period
+
+./as2_knowledge_graph_integration/insert_knowledge.py:150:1: D400 First line should end with a period
+
+./as2_knowledge_graph_integration/insert_knowledge.py:182:1: D400 First line should end with a period
+
+./as2_knowledge_graph_integration/insert_knowledge.py:182:1: D401 First line should be in imperative mood
+
+./as2_knowledge_graph_integration/utils.py:30:1: F401 'knowledge_graph_msgs.msg.Content' imported but unused
+
+from knowledge_graph_msgs.msg import Node, Edge, Content, Property
+^
+from knowledge_graph_msgs.msg import Node, Edge, Content, Property
+^
+import rclpy
+^
+from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph
+^
+from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph
+^
+from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
+^
+from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
+^
+            self.get_logger().info('service read_edge_source_target_graph is not available, waiting again...')
+                                                                                                   ^
+        """Main callback"""
+^
+        """Main callback"""
+^
+                            edge_class='near', source_node=node.node_name, target_node=aux_node.node_name)
+                                                                                                   ^
+                        req_exist_edge.edge_class = "near"
+                                                    ^
+                                self.future_resp_create_edge = self.cli_create_edge_near.call_async(
+                                                                                                   ^
+                print("Succssefully create the edge")
+                      ^
+10    D400 First line should end with a period
+4     D401 First line should be in imperative mood
+10    E501 line too long (100 > 99 characters)
+8     F401 'rclpy.qos.qos_profile_system_default' imported but unused
+14    I100 Import statements are in the wrong order. 'import parameters' should be before 'import utils'
+8     I101 Imported names are in the wrong order. Should be CreateEdge, CreateNode
+2     I201 Missing newline between import groups. 'from knowledge_graph_msgs.msg import Node, Edge, Content, Property' is identified as Third Party and 'import math' is identified as Stdlib.
+4     Q000 Double quotes found but single quotes preferred
+./as2_knowledge_graph_integration/utils.py:30:1: I101 Imported names are in the wrong order. Should be Content, Edge, Node, Property
+
+./as2_knowledge_graph_integration/utils.py:30:1: I201 Missing newline between import groups. 'from knowledge_graph_msgs.msg import Node, Edge, Content, Property' is identified as Third Party and 'import math' is identified as Stdlib.
+
+./as2_knowledge_graph_integration/read_knowledge.py:30:1: I100 Import statements are in the wrong order. 'import rclpy' should be before 'import utils'
+
+./as2_knowledge_graph_integration/read_knowledge.py:32:1: I101 Imported names are in the wrong order. Should be CreateEdge, ReadEdgeGraph, ReadGraph
+
+./as2_knowledge_graph_integration/read_knowledge.py:32:1: I100 Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph' should be before 'from rclpy.node import Node'
+
+./as2_knowledge_graph_integration/read_knowledge.py:33:1: F401 'rclpy.qos.qos_profile_sensor_data' imported but unused
+
+./as2_knowledge_graph_integration/read_knowledge.py:33:1: F401 'rclpy.qos.qos_profile_system_default' imported but unused
+
+./as2_knowledge_graph_integration/read_knowledge.py:58:100: E501 line too long (110 > 99 characters)
+
+./as2_knowledge_graph_integration/read_knowledge.py:70:1: D400 First line should end with a period
+
+./as2_knowledge_graph_integration/read_knowledge.py:70:1: D401 First line should be in imperative mood; try rephrasing
+
+./as2_knowledge_graph_integration/read_knowledge.py:95:100: E501 line too long (106 > 99 characters)
+
+./as2_knowledge_graph_integration/read_knowledge.py:96:53: Q000 Double quotes found but single quotes preferred
+
+./as2_knowledge_graph_integration/read_knowledge.py:99:100: E501 line too long (100 > 99 characters)
+
+./as2_knowledge_graph_integration/read_knowledge.py:111:23: Q000 Double quotes found but single quotes preferred
+
+
+13 files checked
+60 errors
+
+'D'-type errors: 14
+'E'-type errors: 10
+'F'-type errors: 8
+'I'-type errors: 24
+'Q'-type errors: 4
+
+Checked files:
+
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/setup.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/parameters.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/__init__.py
+* ./as2_knowledge_graph_integration/read_graph.py
+* ./as2_knowledge_graph_integration/insert_knowledge.py
+* ./as2_knowledge_graph_integration/utils.py
+* ./as2_knowledge_graph_integration/parameters.py
+* ./as2_knowledge_graph_integration/read_knowledge.py
+* ./as2_knowledge_graph_integration/__init__.py
+
+
+-- run_test.py: return code 1
+-- run_test.py: verify result file '/home/carmendrpr/ros2_ws/src/as2_knowledge_graph_integration/build/test_results/as2_knowledge_graph_integration/flake8.xunit.xml'

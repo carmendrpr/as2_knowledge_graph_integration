@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  name="as2_knowledge_graph_integration.flake8"
+  tests="60"
+  errors="0"
+  failures="60"
+  time="0.775"
+>
+  <testcase
+    name="I101 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py:3:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be ReadEdgeGraph, ReadGraph:&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py:3:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph' should be before 'from rclpy.node import Node':&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:31:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'import parameters' should be before 'import utils':&#10;import parameters&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:32:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from geometry_msgs.msg import PoseStamped' should be before 'import parameters':&#10;from geometry_msgs.msg import PoseStamped&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:34:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_msgs.msg import PlatformInfo' should be before 'from sensor_msgs.msg import BatteryState':&#10;from as2_msgs.msg import PlatformInfo&#10;"/>
+  </testcase>
+  <testcase
+    name="I101 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:35:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be CreateEdge, CreateNode:&#10;from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:35:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge' should be before 'from as2_msgs.msg import PlatformInfo':&#10;from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge&#10;"/>
+  </testcase>
+  <testcase
+    name="F401 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:38:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'rclpy.qos.qos_profile_system_default' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
+  </testcase>
+  <testcase
+    name="E501 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:52:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (100 &gt; 99 characters):&#10;            PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)&#10;"/>
+  </testcase>
+  <testcase
+    name="E501 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:54:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (115 &gt; 99 characters):&#10;            BatteryState, 'sensor_measurements/battery', self.read_baterry_state_callback, qos_profile_sensor_data)&#10;"/>
+  </testcase>
+  <testcase
+    name="D400 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:101:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Call for status info"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D400 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:117:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Call for battery state info"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D400 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:150:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Call for the pose info topic"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D400 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:182:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Requests"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D401 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py:182:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should be in imperative mood:&#10;        """Requests"""&#10;'/>
+  </testcase>
+  <testcase
+    name="F401 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'knowledge_graph_msgs.msg.Content' imported but unused:&#10;from knowledge_graph_msgs.msg import Node, Edge, Content, Property&#10;"/>
+  </testcase>
+  <testcase
+    name="I101 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be Content, Edge, Node, Property:&#10;from knowledge_graph_msgs.msg import Node, Edge, Content, Property&#10;"/>
+  </testcase>
+  <testcase
+    name="I201 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Missing newline between import groups. 'from knowledge_graph_msgs.msg import Node, Edge, Content, Property' is identified as Third Party and 'import math' is identified as Stdlib.:&#10;from knowledge_graph_msgs.msg import Node, Edge, Content, Property&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'import rclpy' should be before 'import utils':&#10;import rclpy&#10;"/>
+  </testcase>
+  <testcase
+    name="I101 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:32:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be CreateEdge, ReadEdgeGraph, ReadGraph:&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:32:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph' should be before 'from rclpy.node import Node':&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="F401 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:33:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'rclpy.qos.qos_profile_sensor_data' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
+  </testcase>
+  <testcase
+    name="F401 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:33:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'rclpy.qos.qos_profile_system_default' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
+  </testcase>
+  <testcase
+    name="E501 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:58:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (110 &gt; 99 characters):&#10;            self.get_logger().info('service read_edge_source_target_graph is not available, waiting again...')&#10;"/>
+  </testcase>
+  <testcase
+    name="D400 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:70:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Main callback"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D401 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:70:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should be in imperative mood; try rephrasing:&#10;        """Main callback"""&#10;'/>
+  </testcase>
+  <testcase
+    name="E501 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:95:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (106 &gt; 99 characters):&#10;                            edge_class='near', source_node=node.node_name, target_node=aux_node.node_name)&#10;"/>
+  </testcase>
+  <testcase
+    name="Q000 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:96:53)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='Double quotes found but single quotes preferred:&#10;                        req_exist_edge.edge_class = "near"&#10;'/>
+  </testcase>
+  <testcase
+    name="E501 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:99:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (100 &gt; 99 characters):&#10;                                self.future_resp_create_edge = self.cli_create_edge_near.call_async(&#10;"/>
+  </testcase>
+  <testcase
+    name="Q000 (./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py:111:23)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='Double quotes found but single quotes preferred:&#10;                print("Succssefully create the edge")&#10;'/>
+  </testcase>
+  <testcase
+    name="I101 (./as2_knowledge_graph_integration/read_graph.py:3:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be ReadEdgeGraph, ReadGraph:&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./as2_knowledge_graph_integration/read_graph.py:3:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph' should be before 'from rclpy.node import Node':&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./as2_knowledge_graph_integration/insert_knowledge.py:31:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'import parameters' should be before 'import utils':&#10;import parameters&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./as2_knowledge_graph_integration/insert_knowledge.py:32:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from geometry_msgs.msg import PoseStamped' should be before 'import parameters':&#10;from geometry_msgs.msg import PoseStamped&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./as2_knowledge_graph_integration/insert_knowledge.py:34:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_msgs.msg import PlatformInfo' should be before 'from sensor_msgs.msg import BatteryState':&#10;from as2_msgs.msg import PlatformInfo&#10;"/>
+  </testcase>
+  <testcase
+    name="I101 (./as2_knowledge_graph_integration/insert_knowledge.py:35:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be CreateEdge, CreateNode:&#10;from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./as2_knowledge_graph_integration/insert_knowledge.py:35:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge' should be before 'from as2_msgs.msg import PlatformInfo':&#10;from as2_knowledge_graph_msgs.srv import CreateNode, CreateEdge&#10;"/>
+  </testcase>
+  <testcase
+    name="F401 (./as2_knowledge_graph_integration/insert_knowledge.py:38:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'rclpy.qos.qos_profile_system_default' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
+  </testcase>
+  <testcase
+    name="E501 (./as2_knowledge_graph_integration/insert_knowledge.py:52:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (100 &gt; 99 characters):&#10;            PoseStamped, 'self_localization/pose', self.read_pose_callback, qos_profile_sensor_data)&#10;"/>
+  </testcase>
+  <testcase
+    name="E501 (./as2_knowledge_graph_integration/insert_knowledge.py:54:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (115 &gt; 99 characters):&#10;            BatteryState, 'sensor_measurements/battery', self.read_baterry_state_callback, qos_profile_sensor_data)&#10;"/>
+  </testcase>
+  <testcase
+    name="D400 (./as2_knowledge_graph_integration/insert_knowledge.py:101:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Call for status info"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D400 (./as2_knowledge_graph_integration/insert_knowledge.py:117:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Call for battery state info"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D400 (./as2_knowledge_graph_integration/insert_knowledge.py:150:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Call for the pose info topic"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D400 (./as2_knowledge_graph_integration/insert_knowledge.py:182:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Requests"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D401 (./as2_knowledge_graph_integration/insert_knowledge.py:182:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should be in imperative mood:&#10;        """Requests"""&#10;'/>
+  </testcase>
+  <testcase
+    name="F401 (./as2_knowledge_graph_integration/utils.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'knowledge_graph_msgs.msg.Content' imported but unused:&#10;from knowledge_graph_msgs.msg import Node, Edge, Content, Property&#10;"/>
+  </testcase>
+  <testcase
+    name="I101 (./as2_knowledge_graph_integration/utils.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be Content, Edge, Node, Property:&#10;from knowledge_graph_msgs.msg import Node, Edge, Content, Property&#10;"/>
+  </testcase>
+  <testcase
+    name="I201 (./as2_knowledge_graph_integration/utils.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Missing newline between import groups. 'from knowledge_graph_msgs.msg import Node, Edge, Content, Property' is identified as Third Party and 'import math' is identified as Stdlib.:&#10;from knowledge_graph_msgs.msg import Node, Edge, Content, Property&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./as2_knowledge_graph_integration/read_knowledge.py:30:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'import rclpy' should be before 'import utils':&#10;import rclpy&#10;"/>
+  </testcase>
+  <testcase
+    name="I101 (./as2_knowledge_graph_integration/read_knowledge.py:32:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Imported names are in the wrong order. Should be CreateEdge, ReadEdgeGraph, ReadGraph:&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="I100 (./as2_knowledge_graph_integration/read_knowledge.py:32:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="Import statements are in the wrong order. 'from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph' should be before 'from rclpy.node import Node':&#10;from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph&#10;"/>
+  </testcase>
+  <testcase
+    name="F401 (./as2_knowledge_graph_integration/read_knowledge.py:33:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'rclpy.qos.qos_profile_sensor_data' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
+  </testcase>
+  <testcase
+    name="F401 (./as2_knowledge_graph_integration/read_knowledge.py:33:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="'rclpy.qos.qos_profile_system_default' imported but unused:&#10;from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default&#10;"/>
+  </testcase>
+  <testcase
+    name="E501 (./as2_knowledge_graph_integration/read_knowledge.py:58:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (110 &gt; 99 characters):&#10;            self.get_logger().info('service read_edge_source_target_graph is not available, waiting again...')&#10;"/>
+  </testcase>
+  <testcase
+    name="D400 (./as2_knowledge_graph_integration/read_knowledge.py:70:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should end with a period:&#10;        """Main callback"""&#10;'/>
+  </testcase>
+  <testcase
+    name="D401 (./as2_knowledge_graph_integration/read_knowledge.py:70:1)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='First line should be in imperative mood; try rephrasing:&#10;        """Main callback"""&#10;'/>
+  </testcase>
+  <testcase
+    name="E501 (./as2_knowledge_graph_integration/read_knowledge.py:95:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (106 &gt; 99 characters):&#10;                            edge_class='near', source_node=node.node_name, target_node=aux_node.node_name)&#10;"/>
+  </testcase>
+  <testcase
+    name="Q000 (./as2_knowledge_graph_integration/read_knowledge.py:96:53)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='Double quotes found but single quotes preferred:&#10;                        req_exist_edge.edge_class = "near"&#10;'/>
+  </testcase>
+  <testcase
+    name="E501 (./as2_knowledge_graph_integration/read_knowledge.py:99:100)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message="line too long (100 &gt; 99 characters):&#10;                                self.future_resp_create_edge = self.cli_create_edge_near.call_async(&#10;"/>
+  </testcase>
+  <testcase
+    name="Q000 (./as2_knowledge_graph_integration/read_knowledge.py:111:23)"
+    classname="as2_knowledge_graph_integration.flake8"
+  >
+      <failure message='Double quotes found but single quotes preferred:&#10;                print("Succssefully create the edge")&#10;'/>
+  </testcase>
+  <system-out>Checked files:
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/setup.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/parameters.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py
+* ./build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/__init__.py
+* ./as2_knowledge_graph_integration/read_graph.py
+* ./as2_knowledge_graph_integration/insert_knowledge.py
+* ./as2_knowledge_graph_integration/utils.py
+* ./as2_knowledge_graph_integration/parameters.py
+* ./as2_knowledge_graph_integration/read_knowledge.py
+* ./as2_knowledge_graph_integration/__init__.py</system-out>
+</testsuite>

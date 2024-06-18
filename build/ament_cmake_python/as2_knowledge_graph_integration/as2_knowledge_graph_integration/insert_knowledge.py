@@ -105,7 +105,6 @@ class InsertKnowledgeService(RclNode):
         self.status = utils.node_format('status', node_name=status_name, priority=1)
         req = CreateNode.Request()
         req_edge = CreateEdge.Request()
-        print(self.status)
         req.node = self.status
         req_edge.edge = utils.edge_format(
             edge_class='is', source_node=self.dron_node.node_name, target_node=req.node.node_name)
@@ -125,9 +124,9 @@ class InsertKnowledgeService(RclNode):
         req_battery_edge = CreateEdge.Request()
         req_battery_edge_charge = CreateEdge.Request()
         req_battery_edge.edge = utils.edge_format(
-            edge_class='high', source_node=self.dron_node.node_name, target_node=req.node.node_name)
+            edge_class='high', source_node=self.get_namespace(), target_node=req.node.node_name)
         req_battery_edge_charge.edge = utils.edge_format(
-            edge_class='low', source_node=self.dron_node.node_name, target_node=req.node.node_name)
+            edge_class='low', source_node=self.get_namespace(), target_node=req.node.node_name)
 
         """Futures"""
         if self.future_resp_battery_node is None:
@@ -150,8 +149,7 @@ class InsertKnowledgeService(RclNode):
     def read_pose_callback(self, msg: PoseStamped) -> None:
         """Call for the pose info topic"""
         print('subscribe to pose')
-        self.dron_node = utils.node_from_msg(
-            'Dron', self.get_namespace(), msg.pose, priority=1)
+        self.dron_node = utils.node_from_msg('Dron', self.get_namespace(), msg.pose, priority=1)
 
         """ Sending request to add node"""
         req = CreateNode.Request()
@@ -164,21 +162,21 @@ class InsertKnowledgeService(RclNode):
         req_person.node = parameters.node_person
         req_geozone.node = utils.node_from_geozone(parameters.geozone)
         req_geozone_edge.edge = utils.edge_format(
-            'inside range', self.dron_node.node_name, req_geozone.node.node_name)
+            'inside range', self.get_namespace(), req_geozone.node.node_name)
 
         # Creating a future
         if self.future_resp_node is None:
             self.future_resp_node = self.cli_create_node.call_async(req)
-        # if self.future_resp_node.done():
-        if self.future_resp_person is None:
-            self.future_resp_person = self.cli_create_node.call_async(req_person)
-        if self.future_resp_home is None:
-            self.future_resp_home = self.cli_create_node.call_async(req_home)
-        if self.future_resp_geozone is None:
-            self.future_resp_geozone = self.cli_create_node.call_async(req_geozone)
-        if self.future_resp_geozone_edge is None:
-            self.future_resp_geozone_edge = self.cli_create_edge.call_async(
-                req_geozone_edge)
+        if self.future_resp_node.done():
+            if self.future_resp_person is None:
+                self.future_resp_person = self.cli_create_node.call_async(req_person)
+            if self.future_resp_home is None:
+                self.future_resp_home = self.cli_create_node.call_async(req_home)
+            if self.future_resp_geozone is None:
+                self.future_resp_geozone = self.cli_create_node.call_async(req_geozone)
+            if self.future_resp_geozone_edge is None:
+                self.future_resp_geozone_edge = self.cli_create_edge.call_async(
+                    req_geozone_edge)
 
     def simulate(self):
         """Requests"""
@@ -186,13 +184,13 @@ class InsertKnowledgeService(RclNode):
         req_edge_home_at = CreateEdge.Request()
         req_edge_person_seeing = CreateEdge.Request()
         req_edge_home_going = CreateEdge.Request()
-        req_edge_home_at.edge = utils.edge_format('at', self.dron_node.node_name, 'home')
+        req_edge_home_at.edge = utils.edge_format('at', self.get_namespace(), 'home')
         req_edge_person_looking.edge = utils.edge_format(
-            'looking for', self.dron_node.node_name, 'paco')
+            'looking for', self.get_namespace(), 'paco')
         req_edge_person_seeing.edge = utils.edge_format(
-            'seeing', self.dron_node.node_name, 'paco')
+            'seeing', self.get_namespace(), 'paco')
         req_edge_home_going.edge = utils.edge_format(
-            'going to', self.dron_node.node_name, 'home')
+            'going to', self.get_namespace(), 'home')
 
         if self.future_resp_edge_home is None:
             self.future_resp_edge_home = self.cli_create_edge.call_async(req_edge_home_at)
