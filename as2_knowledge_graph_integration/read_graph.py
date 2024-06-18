@@ -30,46 +30,35 @@ class ReadMyGraph(RclNode):
         self.request_edge = ReadEdgeGraph.Request()
 
     def read_graph(self):
-        # self.request_edge.source_node = '/drone0'
-        # self.request_edge.target_node = 'Battery'
-        # req_edge = ReadEdgeGraph.Request()
-        # req_edge.source_node = '/drone0'
-        # req_edge.target_node = 'Battery'
-        # req_edge.edge_class = ''
-        # if self.responses.get('bat_levl') is None:
-        #     print(self.responses.get('bat_levl'))
-        #     # self.responses.update('bat_level', self.client_edges.call_async(
-        #     #     self.request_edge.source_node, self.request_edge.target_node))
-        #     self.responses.update({'bat_level': self.client_edges.call_async(
-        #         req_edge)})
-        #     print(self.responses.get('bat_levl'))
+        """
+        Requests
+        """
         req_nodes = ReadGraph.Request()
         req_nodes.node_class = 'Dron'
+        self.request_edge.source_node = '/drone0'
+        self.request_edge.target_node = 'Battery'
+        # print(self.request_edge)
 
+        # Future for /drone0
         if self.responses.get('nodes') is None:
             self.responses.update({'nodes': self.client_nodes.call_async(req_nodes)})
             # print(self.responses.get('nodes'))
 
-        """esto funciona"""
-        # if self.resp is None:
-        #     self.resp = self.client_nodes.call_async(req_nodes)
+        if self.responses.get('bat_level') is None:
+            self.responses.update({'bat_level': self.client_edges.call_async(
+                self.request_edge)})
 
     def future_callbacks(self):
-        # if self.responses.get('bat_levl') is not None:
-        #     if self.responses.get('bat_levl').done():
-        #         print(self.responses.get('bat_levl'))
-        # self.responses.update({'bat_level': None})
+
+        if self.responses.get('bat_level') is not None:
+            if self.responses['bat_level'].done():
+                print(self.responses['bat_level'].result())
+                self.responses.update({'bat_level': None})
 
         if self.responses.get('nodes') is not None:
             if self.responses['nodes'].done():
                 print(self.responses['nodes'].result())
-        """esto funciona"""
-        # if self.resp is not None:
-        #     if self.resp.done():
-        #         responses = ReadGraph.Response()
-        #         responses = self.resp.result()
-        #         print(responses)
-        #         self.resp = None
+                self.responses.update({'nodes': None})
 
 
 def main():
