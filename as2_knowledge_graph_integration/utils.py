@@ -149,3 +149,10 @@ def look_for_nodes(list_nodes, node_class):
         if aux_node.node_class == node_class:
             nodes.append(aux_node)
     return nodes
+
+
+def check_edges(edge, edge_class) -> bool:
+    ckeck = False
+    if edge.edge_class == edge_class:
+        ckeck = True
+    return ckeck
