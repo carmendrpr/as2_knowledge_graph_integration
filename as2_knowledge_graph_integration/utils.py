@@ -28,7 +28,7 @@
 
 import math
 from knowledge_graph_msgs.msg import Node, Edge, Content, Property
-import parameters
+import as2_knowledge_graph_integration.parameters as parameters
 
 
 def node_from_geozone(geozone):

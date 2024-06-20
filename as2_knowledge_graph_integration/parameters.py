@@ -30,7 +30,7 @@ from knowledge_graph_msgs.msg import Node, Property
 
 """Node person"""
 node_person = Node()
-node_person.node_class = 'person'
+node_person.node_class = 'Person'
 node_person.node_name = 'paco'
 prop_person = Property()
 prop_person.key = 'Position'

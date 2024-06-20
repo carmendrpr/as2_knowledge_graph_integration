@@ -1,7 +1,8 @@
 import rclpy
-import utils
+import as2_knowledge_graph_integration.utils as utils
 from rclpy.node import Node as RclNode
 from as2_knowledge_graph_msgs.srv import ReadGraph, ReadEdgeGraph
+from knowledge_graph_msgs.msg import Node
 
 
 class ReadMyGraph(RclNode):
@@ -11,8 +12,6 @@ class ReadMyGraph(RclNode):
         """
         Timer
         """
-        self.timer = self.create_timer(0.5, self.read_graph)
-        self.timer = self.create_timer(2.0, self.future_callbacks)
 
         """
         Clients
@@ -30,79 +29,82 @@ class ReadMyGraph(RclNode):
 
         self.request_edge = ReadEdgeGraph.Request()
 
+        # namespace of dron
+        self.ns_drone = None
+
+    def query_graph_node(self, req: ReadGraph.Request) -> ReadGraph.Response:
+        future = self.client_nodes.call_async(req)
+        rclpy.spin_until_future_complete(self, future)
+        return future.result()
+
     def query_graph_edge(self, req: ReadEdgeGraph.Request) -> ReadEdgeGraph.Response:
         future = self.client_edges.call_async(req)
         rclpy.spin_until_future_complete(self, future)
         return future.result()
 
-    def read_graph(self):
-        """
-        Requests
-        """
-        req_nodes = ReadGraph.Request()
-        req_nodes.node_class = 'Dron'
-        self.request_edge.source_node = '/drone0'
-        self.request_edge.target_node = 'Battery'
+    def query_node_name(self, node_class) -> Node.node_name:
+        req = ReadGraph.Request()
+        req.node_class = node_class
+        nodes = ReadGraph.Response()
+        #    return a list of nodes
+        nodes = self.query_graph_node(req)
+        if not nodes.nodes:
+            return None
+        return nodes.nodes[0].node_name
 
-        if self.responses.get('nodes') is None:
-            self.responses.update({'nodes': self.client_nodes.call_async(req_nodes)})
+    # def check_battery(self, level) -> bool:
+    #     '''
+    #      level := High or low
+    #     '''
+    #     # Assert level is well formed
 
-        if self.responses.get('bat_level') is None:
-            self.responses.update({'bat_level': self.client_edges.call_async(
-                self.request_edge)})
+    #     # battery request
 
-    def future_callbacks(self):
+    #     req = ReadEdgeGraph.Request()
+    #     req.source_node = self.query_node_name('Dron')
+    #     req.target_node = 'Battery'
+    #     # check if self is needed
 
-        # if self.responses.get('bat_level') is not None:
-        #     if self.responses['bat_level'].done():
-        #         print(self.responses['bat_level'].result())
-        #         self.responses.update({'bat_level': None})
+    #     bat = self.query_graph_edge(req)
+    #     print(f'{bat=}')
+    #     if not bat.edge:
+    #         print('empty')
+    #         return False
 
-        if self.responses.get('nodes') is not None:
-            if self.responses['nodes'].done():
-                # print(self.responses['nodes'].result())
-                self.responses.update({'nodes': None})
+    #     charge = utils.check_edges(bat.edge[0], level)
 
-    def check_battery(self, level) -> bool:
-        '''
-         level := High or low
-        '''
-        # Assert level is well formed
+    #     return charge
 
-        # battery request
-
+    def check_status_of_edge(self, source_node_class, target_node_class, edge_name) -> bool:
         req = ReadEdgeGraph.Request()
-        req.source_node = '/drone0'
-        req.target_node = 'Battery'
-        # check if self is needed
-
-        bat = self.query_graph_edge(req)
-        print(f'{bat=}')
-        if not bat.edge:
-            print('empty')
+        if source_node_class is None or target_node_class is None or edge_name is None:
+            return False
+        if self.query_node_name(source_node_class) is None or self.query_node_name(target_node_class) is None:
             return False
 
-        charge = utils.check_edges(bat.edge[0], level)
+        req.source_node = self.query_node_name(source_node_class)
+        req.target_node = self.query_node_name(target_node_class)
+        resp = self.query_graph_edge(req)
+        if not resp.edge:
+            print('empty')
+            return False
+        status_aux = utils.check_edges(resp.edge[0], edge_name)
 
-        # if self.responses.get('bat_level') is not None:
-        #     if self.responses['bat_level'].done():
-        #         print('dentro high')
-        #         aux_bat = ReadEdgeGraph.Response()
-        #         aux_bat.edge
-        #         aux_bat = self.responses['bat_level'].result()
-        #         print(aux_bat.edge[0].edge_class)
-        #         charge = utils.check_edges(aux_bat.edge[0], level)
-        #         print(charge)
-        #         self.responses.update({'bat_level': None})
-        return charge
+        return status_aux
 
 
 def main():
     rclpy.init()
     service_node = ReadMyGraph()
 
-    out = service_node.check_battery('high')
+    # out = service_node.check_battery('high')
+
+    out = service_node.check_status_of_edge('Dron', 'Battery', 'high')
     print(f'{out=}')
+    out2 = service_node.query_node_name('Dron')
+    print(f'{out2=}')
+    out3 = service_node.check_status_of_edge('Dron', 'Person', 'seeing')
+    print(f'{out3=}')
 
 
 if __name__ == '__main__':
