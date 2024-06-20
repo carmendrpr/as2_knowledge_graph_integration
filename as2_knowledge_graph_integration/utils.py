@@ -34,7 +34,7 @@ import as2_knowledge_graph_integration.parameters as parameters
 def node_from_geozone(geozone):
     geozone = parameters.geozone
     node = Node()
-    node.node_class = 'position'
+    node.node_class = 'Position'
     node.node_name = 'geozone'
     prop = Property()
     keys = list(geozone.keys())
