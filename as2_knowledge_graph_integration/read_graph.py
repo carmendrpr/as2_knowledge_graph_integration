@@ -24,14 +24,6 @@ class ReadMyGraph(RclNode):
         while not self.client_edges.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service read_graph is not available, waiting again...')
 
-        self.resp = None
-        self.responses = {}
-
-        self.request_edge = ReadEdgeGraph.Request()
-
-        # namespace of dron
-        self.ns_drone = None
-
     def query_graph_node(self, req: ReadGraph.Request) -> ReadGraph.Response:
         future = self.client_nodes.call_async(req)
         rclpy.spin_until_future_complete(self, future)
@@ -51,29 +43,6 @@ class ReadMyGraph(RclNode):
         if not nodes.nodes:
             return None
         return nodes.nodes[0].node_name
-
-    # def check_battery(self, level) -> bool:
-    #     '''
-    #      level := High or low
-    #     '''
-    #     # Assert level is well formed
-
-    #     # battery request
-
-    #     req = ReadEdgeGraph.Request()
-    #     req.source_node = self.query_node_name('Dron')
-    #     req.target_node = 'Battery'
-    #     # check if self is needed
-
-    #     bat = self.query_graph_edge(req)
-    #     print(f'{bat=}')
-    #     if not bat.edge:
-    #         print('empty')
-    #         return False
-
-    #     charge = utils.check_edges(bat.edge[0], level)
-
-    #     return charge
 
     def check_status_of_edge(self, source_node_class, target_node_class, edge_name) -> bool:
         req = ReadEdgeGraph.Request()
@@ -96,8 +65,6 @@ class ReadMyGraph(RclNode):
 def main():
     rclpy.init()
     service_node = ReadMyGraph()
-
-    # out = service_node.check_battery('high')
 
     out = service_node.check_status_of_edge('Dron', 'Battery', 'high')
     print(f'{out=}')

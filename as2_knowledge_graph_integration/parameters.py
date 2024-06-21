@@ -50,12 +50,12 @@ node_home.properties.append(prop_home)
 
 """GEOZONE"""
 geozone = {
-    'grid reference': {
+    'Grid reference': {
         (0, 0): 7, (0, 1): 0, (0, 2): 0,
         (1, 0): 0, (1, 1): 7, (1, 2): 0,
         (2, 0): 0, (2, 1): 0, (2, 2): 7
     },
-    'warning zone': {
+    'Warning zone': {
         (0, 0): 9, (0, 1): 0, (0, 2): 0,
         (1, 0): 0, (1, 1): 9, (1, 2): 0,
         (2, 0): 0, (2, 1): 0, (2, 2): 9

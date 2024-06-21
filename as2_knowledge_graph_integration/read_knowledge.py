@@ -26,7 +26,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import utils
+import as2_knowledge_graph_integration.utils as utils
+import as2_knowledge_graph_integration.utils_for_drones as utils_for_drones
 import rclpy
 from rclpy.node import Node as RclNode
 from as2_knowledge_graph_msgs.srv import ReadGraph, CreateEdge, ReadEdgeGraph
@@ -86,7 +87,7 @@ class ReadKnowledgeService(RclNode):
                         aux_node = nodes[index_aux]
                         aux_prop_1 = utils.look_for_property(node.properties, 'Position')
                         aux_prop_2 = utils.look_for_property(aux_node.properties, 'Position')
-                        self.distance = utils.calculate_distance(
+                        self.distance = utils_for_drones.calculate_distance(
                             aux_prop_1, aux_prop_2)
                         print('the distance is', self.distance)
                         req_aux_edge = CreateEdge.Request()

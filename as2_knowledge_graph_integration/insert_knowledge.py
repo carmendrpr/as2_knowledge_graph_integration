@@ -27,7 +27,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 
-import utils
+import as2_knowledge_graph_integration.utils as utils
+import as2_knowledge_graph_integration.utils_for_drones as utils_for_drones
 import parameters
 from geometry_msgs.msg import PoseStamped
 from sensor_msgs.msg import BatteryState
@@ -77,6 +78,8 @@ class InsertKnowledgeService(RclNode):
         # ¿podria crear una lista para integrar todas estas variables?
         """Dictionary the futures"""
         self.responses = {}
+
+        self.responses = {}
         self.dron_node = None
         self.future_resp_node = None
         self.future_resp_battery_node = None
@@ -101,7 +104,7 @@ class InsertKnowledgeService(RclNode):
         """Call for status info"""
         print('subscribe to status')
         """Requests"""
-        status_name = utils.status_from_platform(msg.status.state)
+        status_name = utils_for_drones.status_from_platform(msg.status.state)
         self.status = utils.node_format('status', node_name=status_name, priority=1)
         req = CreateNode.Request()
         req_edge = CreateEdge.Request()
@@ -119,7 +122,8 @@ class InsertKnowledgeService(RclNode):
         print('subscribe to battery')
 
         """Requests"""
-        aux_node = utils.node_format_with_prop('Battery', 'Battery', msg.charge, priority=1)
+        # aux_node = utils.node_format_with_prop('Battery', 'Battery', msg.charge, priority=1)
+        aux_node = utils.node_format('Battery', 'Battery', priority=1)
         req = CreateNode.Request()
         req.node = aux_node
         req_battery_edge = CreateEdge.Request()
@@ -150,8 +154,9 @@ class InsertKnowledgeService(RclNode):
     def read_pose_callback(self, msg: PoseStamped) -> None:
         """Call for the pose info topic"""
         print('subscribe to pose')
-        self.dron_node = utils.node_from_msg(
-            'Dron', self.get_namespace(), msg.pose, priority=1)
+
+        self.dron_node = utils.node_format_with_prop(
+            'Dron', self.get_namespace(), utils_for_drones.pos_prop_from_pose(msg.pose), priority=1)
 
         """ Sending request to add node"""
         req = CreateNode.Request()
@@ -162,7 +167,7 @@ class InsertKnowledgeService(RclNode):
         req.node = self.dron_node
         req_home.node = parameters.node_home
         req_person.node = parameters.node_person
-        req_geozone.node = utils.node_from_geozone(parameters.geozone)
+        req_geozone.node = utils_for_drones.node_from_geozone(parameters.geozone)
         req_geozone_edge.edge = utils.edge_format(
             'inside range', self.dron_node.node_name, req_geozone.node.node_name)
 
