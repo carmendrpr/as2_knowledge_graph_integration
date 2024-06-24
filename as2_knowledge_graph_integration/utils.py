@@ -67,7 +67,7 @@ def edge_format(edge_class, source_node, target_node) -> Edge:
 def look_for_property(list_prop, prop_key) -> Property:
     for aux_prop in list_prop:
         if aux_prop.key == prop_key:
-            print(aux_prop.value.float_vector)
+            # print(aux_prop.value.float_vector)
             return aux_prop
 
 

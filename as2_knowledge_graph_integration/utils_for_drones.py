@@ -53,6 +53,8 @@ def status_from_platform(platform_info) -> str:
         node_name = 'Flying'
     elif platform_info == 4:
         node_name = 'Landing'
+    elif platform_info == 0:
+        node_name = 'Disarmed'
     return node_name
 
 
@@ -85,33 +87,33 @@ def person_edge_req(source_node, target_node, ns):
     pose_prop = utils.look_for_property(source_node.properties, 'Position')
     person_prop = utils.look_for_property(target_node.properties, 'Position')
     distance = calculate_distance(pose_prop, person_prop)
-    print(distance)
     if distance < 1:
         person_edge.edge = utils.edge_format(
             edge_class='seeing', source_node=ns, target_node=target_node.node_name)
         person_edge_rm.edge = utils.edge_format(
             edge_class='looking for', source_node=ns, target_node=target_node.node_name)
-    else:
-        person_edge.edge = utils.edge_format(
-            edge_class='looking for', source_node=ns, target_node=target_node.node_name)
-        person_edge_rm.edge = utils.edge_format(
-            edge_class='seeing', source_node=ns, target_node=target_node.node_name)
-    return person_edge.edge, person_edge_rm.edge
+        return person_edge.edge, person_edge_rm.edge
+    return None
 
 
 def home_edge_req(source_node, target_node, ns):
     home_edge = CreateEdge.Request()
+    home_edge_rm = CreateEdge.Request()
 
     pose_prop = utils.look_for_property(source_node.properties, 'Position')
     home_prop = utils.look_for_property(target_node.properties, 'Position')
     distance = calculate_distance(pose_prop, home_prop)
-    if distance == 0:
+    if distance < 0.05:
         home_edge.edge = utils.edge_format(
             edge_class='is at', source_node=ns, target_node=target_node.node_name)
+        home_edge_rm.edge = utils.edge_format(
+            edge_class='outside', source_node=ns, target_node=target_node.node_name)
     else:
         home_edge.edge = utils.edge_format(
             edge_class='outside', source_node=ns, target_node=target_node.node_name)
-    return home_edge.edge
+        home_edge_rm.edge = utils.edge_format(
+            edge_class='is at', source_node=ns, target_node=target_node.node_name)
+    return home_edge.edge, home_edge_rm.edge
 
 
 def geozone_edge_req(source_node, target_node, ns):

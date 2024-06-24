@@ -77,6 +77,14 @@ class InsertKnowledgeService(RclNode):
 
         """Dictionary the futures"""
         self.responses = {}
+        self.request = {'dron': CreateNode.Request(), 'pose': CreateNode.Request(), 'battery': CreateNode.Request(), 'status': CreateNode.Request(
+        ), 'geozone': CreateNode.Request(), 'home': CreateNode.Request(), 'person': CreateNode.Request(), 'status_rm': CreateNode.Request()}
+        self.request['status_rm'].node = utils.node_format(
+            'Status', 'Disarmed', 1)
+
+        self.request_edge = {'person_edge': CreateEdge.Request(
+        ), 'person_edge_rm': CreateEdge.Request(), 'home_edge': CreateEdge.Request(), 'home_edge_rm': CreateEdge.Request(), 'status_edge': CreateEdge.Request(), 'pose_edge': CreateEdge.Request(), 'battery_edge': CreateEdge.Request()}
+        self.flag = True
 
     def subscribe_pose(self, msg: PoseStamped) -> None:
         self.drone_node = utils.node_format(
@@ -93,78 +101,98 @@ class InsertKnowledgeService(RclNode):
         self.drone_status = utils.node_format(
             'Status', utils_for_drones.status_from_platform(msg.status.state), priority=1)
 
-    def generate_node_ns(self):
-        req_ns = CreateNode.Request()
-        req_ns.node = self.drone_node
-        self.responses['namespace'] = self.cli_create_node.call_async(req_ns)
+    def call_once(self, flag):
+        if flag:
+            self.request_edge['person_edge'].edge = utils.edge_format(
+                'looking for', self.drone_node.node_name, parameters.node_person.node_name)
+            self.responses['person_edge'] = self.cli_create_edge.call_async(
+                self.request_edge['person_edge'])
+            rclpy.spin_until_future_complete(self, self.responses['person_edge'])
+
+    def static_nodes(self):
+        """
+        Request for the static nodes
+        """
+        self.request['dron'].node = self.drone_node
+        self.request['person'].node = parameters.node_person
+        self.request['home'].node = parameters.node_home
+
+        """
+        Responses for the static nodes
+        """
+        self.responses['namespace'] = self.cli_create_node.call_async(self.request['dron'])
         rclpy.spin_until_future_complete(self, self.responses['namespace'])
+        self.responses['person'] = self.cli_create_node.call_async(self.request['person'])
+        rclpy.spin_until_future_complete(self, self.responses['person'])
+        self.responses['home'] = self.cli_create_node.call_async(self.request['home'])
+        rclpy.spin_until_future_complete(self, self.responses['home'])
+
+        self.call_once(self.flag)
+        self.flag = False
 
     def generate_nodes(self):
         """
         Request for the nodes
         """
-        req_pose = CreateNode.Request()
-        req_pose.node = self.drone_node_pose
-        req_battery = CreateNode.Request()
-        req_battery.node = self.drone_baterry
-        req_status = CreateNode.Request()
-        req_status.node = self.drone_status
-        req_geozone = CreateNode.Request()
-        req_geozone.node = utils_for_drones.node_from_geozone(parameters.geozone)
-        req_home = CreateNode.Request()
-        req_home.node = parameters.node_home
-        req_person = CreateNode.Request()
-        req_person.node = parameters.node_person
+        self.request['pose'].node = self.drone_node_pose
+        self.request['battery'].node = self.drone_baterry
+
+        self.request['status'].node = self.drone_status
+
+        self.request_edge['status_edge'].edge = utils.edge_format(
+            'is ', self.drone_node.node_name, self.drone_status.node_name)
+
+        if self.request['status_rm'].node != self.drone_status:
+            self.cli_remove_node.call_async(self.request['status_rm'])
+            self.request['status_rm'].node = self.drone_status
+            self
+
         """
         Responses
         """
 
-        self.responses['pose'] = self.cli_create_node.call_async(req_pose)
-        self.responses['battery'] = self.cli_create_node.call_async(req_battery)
-        self.responses['status'] = self.cli_create_node.call_async(req_status)
-        self.responses['geozone'] = self.cli_create_node.call_async(req_geozone)
-        self.responses['home'] = self.cli_create_node.call_async(req_home)
-        self.responses['person'] = self.cli_create_node.call_async(req_person)
+        self.responses['pose'] = self.cli_create_node.call_async(self.request['pose'])
+        self.responses['battery'] = self.cli_create_node.call_async(self.request['battery'])
+        self.responses['status'] = self.cli_create_node.call_async(self.request['status'])
+        self.responses['status_edge'] = self.cli_create_edge.call_async(
+            self.request_edge['status_edge'])
 
     def generate_edges(self):
         """
         Request for the edges
         """
-        req_pose_edge = CreateEdge.Request()
-        req_pose_edge.edge = utils.edge_format(
+        self.request_edge['pose_edge'].edge = utils.edge_format(
             'is at ', self.drone_node.node_name, self.drone_node_pose.node_name)
-        req_battery_edge = CreateEdge.Request()
-        req_battery_edge.edge = utils_for_drones.batery_edge_req(
+        self.request_edge['battery_edge'].edge = utils_for_drones.batery_edge_req(
             self.drone_baterry.properties[1].value.float_value, self.drone_node.node_name, self.drone_baterry.node_name)
-        req_person_edge = CreateEdge.Request()
-        req_person_edge_rm = CreateEdge.Request()
-        req_person_edge.edge, req_person_edge_rm.edge = utils_for_drones.person_edge_req(
-            self.drone_node_pose, parameters.node_person, self.drone_node.node_name)
-        req_home_edge = CreateEdge.Request()
-        req_home_edge.edge = utils_for_drones.home_edge_req(
+
+        if utils_for_drones.person_edge_req(self.drone_node_pose, parameters.node_person, self.drone_node.node_name) is not None:
+            self.request_edge['person_edge'].edge, self.request_edge['person_edge_rm'].edge = utils_for_drones.person_edge_req(
+                self.drone_node_pose, parameters.node_person, self.drone_node.node_name)
+
+        self.request_edge['home_edge'].edge, self.request_edge['home_edge_rm'].edge = utils_for_drones.home_edge_req(
             self.drone_node_pose, parameters.node_home, self.drone_node.node_name)
-        req_status_edge = CreateEdge.Request()
-        req_status_edge.edge = utils.edge_format(
-            'is ', self.drone_node.node_name, self.drone_status.node_name)
 
         """
         Responses for the edges
         """
 
-        self.responses['pose_edge'] = self.cli_create_edge.call_async(req_pose_edge)
+        self.responses['pose_edge'] = self.cli_create_edge.call_async(
+            self.request_edge['pose_edge'])
 
-        self.responses['battery_edge'] = self.cli_create_edge.call_async(req_battery_edge)
+        self.responses['battery_edge'] = self.cli_create_edge.call_async(
+            self.request_edge['battery_edge'])
 
-        self.responses['person_edge'] = self.cli_create_edge.call_async(req_person_edge)
+        self.responses['person_edge'] = self.cli_create_edge.call_async(
+            self.request_edge['person_edge'])
 
-        self.responses['person_edge_rm'] = self.cli_remove_edge.call_async(req_person_edge_rm)
+        self.responses['person_edge_rm'] = self.cli_remove_edge.call_async(
+            self.request_edge['person_edge_rm'])
 
-        self.responses['home_edge'] = self.cli_create_edge.call_async(req_home_edge)
-
-        self.responses['status_edge'] = self.cli_create_edge.call_async(req_status_edge)
-
-        # print(utils_for_drones.geozone_edge_req(self.drone_node_pose,
-        #       utils_for_drones.node_from_geozone, self.drone_node.node_name))
+        self.responses['home_edge'] = self.cli_create_edge.call_async(
+            self.request_edge['home_edge'])
+        self.responses['home_edge_rm'] = self.cli_remove_edge.call_async(
+            self.request_edge['home_edge_rm'])
 
 
 def main():
@@ -173,9 +201,9 @@ def main():
     import time
 
     while rclpy.ok():
-        rclpy.spin_once(service_node)
-        service_node.generate_node_ns()
 
+        rclpy.spin_once(service_node)
+        service_node.static_nodes()
         time.sleep(1)
 
     rclpy.shutdown()
