@@ -1,3 +1,4 @@
+#!/bin/python3
 # Copyright 2024 Universidad Politécnica de Madrid
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +30,7 @@
 
 import as2_knowledge_graph_integration.utils as utils
 import as2_knowledge_graph_integration.utils_for_drones as utils_for_drones
-import parameters
+import as2_knowledge_graph_integration.parameters as parameters
 from geometry_msgs.msg import PoseStamped
 from sensor_msgs.msg import BatteryState
 from as2_msgs.msg import PlatformInfo
@@ -83,15 +84,14 @@ class InsertKnowledgeService(RclNode):
             'Status', 'Disarmed', 1)
 
         self.request_edge = {'person_edge': CreateEdge.Request(
-        ), 'person_edge_rm': CreateEdge.Request(), 'home_edge': CreateEdge.Request(), 'home_edge_rm': CreateEdge.Request(), 'status_edge': CreateEdge.Request(), 'pose_edge': CreateEdge.Request(), 'battery_edge': CreateEdge.Request()}
-        self.flag = True
+        ), 'person_edge_rm': CreateEdge.Request(), 'home_edge': CreateEdge.Request(), 'home_edge_rm': CreateEdge.Request(), 'status_edge': CreateEdge.Request(), 'battery_edge': CreateEdge.Request()}
+        self.flag = {'call_once': True, 'call_seeing': True,
+                     'call_saw': False, 'call_going_home': False}
+        self.responses['person_edge_rm'] = None
 
     def subscribe_pose(self, msg: PoseStamped) -> None:
-        self.drone_node = utils.node_format(
-            'Dron', self.get_namespace(), priority=1)
-
-        self.drone_node_pose = utils.node_format_with_prop(
-            'Dron', 'Pose', utils_for_drones.pos_prop_from_pose(msg.pose), priority=1)
+        self.drone_node = utils.node_format_with_prop(
+            'Dron', self.get_namespace(), utils_for_drones.pos_prop_from_pose(msg.pose), priority=1)
 
     def subscribe_baterry(self, msg: BatteryState) -> None:
         self.drone_baterry = utils.node_format_with_prop(
@@ -127,14 +127,14 @@ class InsertKnowledgeService(RclNode):
         self.responses['home'] = self.cli_create_node.call_async(self.request['home'])
         rclpy.spin_until_future_complete(self, self.responses['home'])
 
-        self.call_once(self.flag)
-        self.flag = False
+        self.call_once(self.flag['call_once'])
+        self.flag['call_once'] = False
 
     def generate_nodes(self):
         """
         Request for the nodes
         """
-        self.request['pose'].node = self.drone_node_pose
+
         self.request['battery'].node = self.drone_baterry
 
         self.request['status'].node = self.drone_status
@@ -145,13 +145,11 @@ class InsertKnowledgeService(RclNode):
         if self.request['status_rm'].node != self.drone_status:
             self.cli_remove_node.call_async(self.request['status_rm'])
             self.request['status_rm'].node = self.drone_status
-            self
 
         """
         Responses
         """
 
-        self.responses['pose'] = self.cli_create_node.call_async(self.request['pose'])
         self.responses['battery'] = self.cli_create_node.call_async(self.request['battery'])
         self.responses['status'] = self.cli_create_node.call_async(self.request['status'])
         self.responses['status_edge'] = self.cli_create_edge.call_async(
@@ -161,33 +159,51 @@ class InsertKnowledgeService(RclNode):
         """
         Request for the edges
         """
-        self.request_edge['pose_edge'].edge = utils.edge_format(
-            'is at ', self.drone_node.node_name, self.drone_node_pose.node_name)
+
         self.request_edge['battery_edge'].edge = utils_for_drones.batery_edge_req(
             self.drone_baterry.properties[1].value.float_value, self.drone_node.node_name, self.drone_baterry.node_name)
-
-        if utils_for_drones.person_edge_req(self.drone_node_pose, parameters.node_person, self.drone_node.node_name) is not None:
-            self.request_edge['person_edge'].edge, self.request_edge['person_edge_rm'].edge = utils_for_drones.person_edge_req(
-                self.drone_node_pose, parameters.node_person, self.drone_node.node_name)
-
         self.request_edge['home_edge'].edge, self.request_edge['home_edge_rm'].edge = utils_for_drones.home_edge_req(
-            self.drone_node_pose, parameters.node_home, self.drone_node.node_name)
+            self.drone_node, parameters.node_home, flag=self.flag['call_going_home'])
+        if self.flag['call_seeing']:
+            if utils_for_drones.person_edge_req(self.drone_node, parameters.node_person, self.drone_node.node_name) is not None:
+                self.flag['call_seeing'] = False
+                self.flag['call_saw'] = True
+                self.request_edge['person_edge'].edge, self.request_edge['person_edge_rm'].edge = utils_for_drones.person_edge_req(
+                    self.drone_node, parameters.node_person, self.drone_node.node_name)
+                self.responses['person_edge_rm'] = self.cli_remove_edge.call_async(
+                    self.request_edge['person_edge_rm'])
+                self.responses['person_edge'] = self.cli_create_edge.call_async(
+                    self.request_edge['person_edge'])
+
+        if self.flag['call_saw']:
+            self.flag['call_saw'] = False
+            self.flag['call_going_home'] = True
+
+            self.request_edge['person_edge'].edge, self.request_edge['person_edge_rm'].edge = utils_for_drones.person_edge_saw_req(
+                self.drone_node, parameters.node_person)
+            self.request_edge['home_edge'].edge, self.request_edge['home_edge_rm'].edge = utils_for_drones.home_edge_req(
+                self.drone_node, parameters.node_home, flag=self.flag['call_going_home'])
+            self.responses['person_edge_rm'] = self.cli_remove_edge.call_async(
+                self.request_edge['person_edge_rm'])
+            self.responses['person_edge'] = self.cli_create_edge.call_async(
+                self.request_edge['person_edge'])
+            self.responses['home_edge'] = self.cli_create_edge.call_async(
+                self.request_edge['home_edge'])
+            self.responses['home_edge_rm'] = self.cli_remove_edge.call_async(
+                self.request_edge['home_edge_rm'])
 
         """
         Responses for the edges
         """
 
-        self.responses['pose_edge'] = self.cli_create_edge.call_async(
-            self.request_edge['pose_edge'])
-
         self.responses['battery_edge'] = self.cli_create_edge.call_async(
             self.request_edge['battery_edge'])
 
-        self.responses['person_edge'] = self.cli_create_edge.call_async(
-            self.request_edge['person_edge'])
+        # self.responses['person_edge'] = self.cli_create_edge.call_async(
+        #     self.request_edge['person_edge'])
 
-        self.responses['person_edge_rm'] = self.cli_remove_edge.call_async(
-            self.request_edge['person_edge_rm'])
+        # self.responses['person_edge_rm'] = self.cli_remove_edge.call_async(
+        #     self.request_edge['person_edge_rm'])
 
         self.responses['home_edge'] = self.cli_create_edge.call_async(
             self.request_edge['home_edge'])

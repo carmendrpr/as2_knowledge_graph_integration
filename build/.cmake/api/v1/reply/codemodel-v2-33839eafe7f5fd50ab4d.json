@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-83a8b8922379d0c59cf6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "as2_knowledge_graph_integration",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_as2_knowledge_graph_integration_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_as2_knowledge_graph_integration_egg-Debug-e5315daa7d7004e0d318.json",
+					"name" : "ament_cmake_python_build_as2_knowledge_graph_integration_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_as2_knowledge_graph_integration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_as2_knowledge_graph_integration-Debug-d456addee03cf6d2df87.json",
+					"name" : "ament_cmake_python_copy_as2_knowledge_graph_integration",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "as2_knowledge_graph_integration_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-as2_knowledge_graph_integration_uninstall-Debug-42e5ec3aa8940eb63b3a.json",
+					"name" : "as2_knowledge_graph_integration_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Debug-5ce7e8e6658b2ebf89c0.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/carmendrpr/ros2_ws/src/as2_knowledge_graph_integration/build",
+		"source" : "/home/carmendrpr/ros2_ws/src/as2_knowledge_graph_integration"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

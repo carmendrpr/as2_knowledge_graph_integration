@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  name="as2_knowledge_graph_integration.cppcheck"
+  tests="2"
+  errors="0"
+  failures="0"
+  time="0.001"
+  skipped="2"
+>
+  <testcase
+    name="build/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.c"
+    classname="as2_knowledge_graph_integration.cppcheck"
+  >
+    <skipped type="skip" message="">
+      ![CDATA[Test Skipped due to cppcheck 2.7 performance issues]]
+    </skipped>
+  </testcase>
+  <testcase
+    name="build/CMakeFiles/3.22.1/CompilerIdCXX/CMakeCXXCompilerId.cpp"
+    classname="as2_knowledge_graph_integration.cppcheck"
+  >
+    <skipped type="skip" message="">
+      ![CDATA[Test Skipped due to cppcheck 2.7 performance issues]]
+    </skipped>
+  </testcase>
+  <system-err>Tests Skipped due to cppcheck 2.7 performance issues</system-err>
+</testsuite>

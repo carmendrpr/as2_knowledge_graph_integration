@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  name="as2_knowledge_graph_integration.copyright"
+  tests="18"
+  errors="0"
+  failures="4"
+  time="0.539"
+>
+  <testcase
+    name="CONTRIBUTING.md"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="LICENSE"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="as2_knowledge_graph_integration/__init__.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="as2_knowledge_graph_integration/insert_knowledge.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="as2_knowledge_graph_integration/insert_knowledgeV2.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="as2_knowledge_graph_integration/parameters.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="as2_knowledge_graph_integration/read_graph.py"
+    classname="as2_knowledge_graph_integration.copyright"
+  >
+      <failure message="could not find copyright notice"/>
+  </testcase>
+  <testcase
+    name="as2_knowledge_graph_integration/read_knowledge.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="as2_knowledge_graph_integration/utils.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="as2_knowledge_graph_integration/utils_for_drones.py"
+    classname="as2_knowledge_graph_integration.copyright"
+  >
+      <failure message="could not find copyright notice"/>
+  </testcase>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/__init__.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledgeV2.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/parameters.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py"
+    classname="as2_knowledge_graph_integration.copyright"
+  >
+      <failure message="could not find copyright notice"/>
+  </testcase>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py"
+    classname="as2_knowledge_graph_integration.copyright"/>
+  <testcase
+    name="build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils_for_drones.py"
+    classname="as2_knowledge_graph_integration.copyright"
+  >
+      <failure message="could not find copyright notice"/>
+  </testcase>
+  <system-out>Checked files:
+* CONTRIBUTING.md
+* LICENSE
+* as2_knowledge_graph_integration/__init__.py
+* as2_knowledge_graph_integration/insert_knowledge.py
+* as2_knowledge_graph_integration/insert_knowledgeV2.py
+* as2_knowledge_graph_integration/parameters.py
+* as2_knowledge_graph_integration/read_graph.py
+* as2_knowledge_graph_integration/read_knowledge.py
+* as2_knowledge_graph_integration/utils.py
+* as2_knowledge_graph_integration/utils_for_drones.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/__init__.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledge.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/insert_knowledgeV2.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/parameters.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_graph.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/read_knowledge.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils.py
+* build/ament_cmake_python/as2_knowledge_graph_integration/as2_knowledge_graph_integration/utils_for_drones.py</system-out>
+</testsuite>

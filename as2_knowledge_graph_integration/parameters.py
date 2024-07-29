@@ -35,7 +35,7 @@ node_person.node_name = 'paco'
 prop_person = Property()
 prop_person.key = 'Position'
 prop_person.value.type = 7
-prop_person.value.float_vector.extend([2.5, 3, 1.2])
+prop_person.value.float_vector.extend([2, 1.5, 1.2])
 node_person.properties.append(prop_person)
 
 """Node Home"""
@@ -45,7 +45,7 @@ node_home.node_name = 'home'
 prop_home = Property()
 prop_home.key = 'Position'
 prop_home.value.type = 7
-prop_home.value.float_vector.extend([0, 0, 0])
+prop_home.value.float_vector.extend([1, 1, 0])
 node_home.properties.append(prop_home)
 
 """GEOZONE"""
