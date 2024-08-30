@@ -184,3 +184,15 @@ def geozone_edge_req(source_node, target_node, ns):
     #     geozone_edge.edge = utils.edge_format(
     #         edge_class='outside', source_node=ns, target_node.node_name)
     # return geozone_edge.edge
+
+
+def check_distances(node1, node2) -> bool:
+    pose1 = utils.look_for_property(node1.properties, 'Position')
+    pose2 = utils.look_for_property(node2.properties, 'Position')
+    distances = calculate_distance(pose1, pose2)
+
+    if distances < 0.3:
+        return True
+
+    else:
+        return False

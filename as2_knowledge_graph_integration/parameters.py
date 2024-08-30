@@ -61,3 +61,13 @@ geozone = {
         (2, 0): 0, (2, 1): 0, (2, 2): 9
     }
 }
+
+"""gate1 node"""
+gate_node = Node()
+gate_node.node_class = 'Gate'
+gate_node.node_name = '/gate1'
+gate_prop = Property()
+gate_prop.key = 'Position'
+gate_prop.value.type = 7
+gate_prop.value.float_vector.extend([1.56, -1.37, 2])
+gate_node.properties.append(gate_prop)

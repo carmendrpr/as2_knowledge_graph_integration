@@ -39,10 +39,6 @@ class ReadMyGraph(RclNode):
         super().__init__('read_graph')
 
         """
-        Timer
-        """
-
-        """
         Clients
         """
         self.client_nodes = self.create_client(ReadGraph, '/read_node_graph')
