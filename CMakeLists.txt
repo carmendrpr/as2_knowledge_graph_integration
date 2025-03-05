@@ -22,7 +22,6 @@ set(PROJECT_DEPENDENCIES
   as2_core
   as2_knowledge_graph_msgs
   as2_knowledge_graph
-  as2_knowledge_graph_integration_msgs
 )
 
 foreach(DEPENDENCY ${PROJECT_DEPENDENCIES})
